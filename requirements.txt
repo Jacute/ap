@@ -1,0 +1,4 @@
+Package          Version
+---------------- -------
+mutagen          1.40.0
+PyQt5            5.11.3
