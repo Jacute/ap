@@ -1,7 +1,7 @@
 import sys
 import os
 
-from mutagen.mp3 import MP3
+from mutagen.id3 import ID3
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QTextEdit
 from PyQt5.QtCore import QUrl
@@ -134,9 +134,9 @@ class Player(QMainWindow):
             self.statusBar().showMessage(self.check_info_about_song(track))
 
     def get_title(self, file):
-        audio = MP3(file)
-        '''TDRC (год) TALB (альбом) TIT2 (название трека)
-        TPE1 (исполнитель) TCON (жанр) COMM:XXX (текст)'''
+        audio = ID3(file)
+        '''TDRC (год), TALB (альбом), TIT2 (название трека),
+        TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
         if audio == {}:
             return 'Unknown artist - Unknown title'
         elif 'TIT2' in audio and 'TPE1' not in audio:
@@ -151,7 +151,7 @@ class Player(QMainWindow):
             return f'{artist} - {title}'
 
     def check_info_about_song(self, file):
-        audio = MP3(file)
+        audio = ID3(file)
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -172,11 +172,19 @@ class Player(QMainWindow):
             genre = str(audio['TCON'])
         else:
             genre = 'Unknown genre'
-        return f'Исполнитель: {artist}. Название: {artist}. Альбом: {album}. Жанр: {genre}.' \
+        return f'Исполнитель: {artist}. Название: {title}. Альбом: {album}. Жанр: {genre}.' \
                f' Год: {year}.'
 
+    def getting_album_pic(self, track):
+        cover_name = '/cover.png'
+        audio = ID3(track)
+        data = audio.getall("APIC")[0].data
+        with open(cover_name, mode="wb") as cover:
+            cover.write(data)
+
+
     def check_text_of_song(self):
-        audio = MP3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
+        audio = ID3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
         if 'COMM::XXX' in audio:
             self.text = str(audio['COMM::XXX'])
         else:
@@ -187,6 +195,7 @@ class Player(QMainWindow):
 
 class SecondForm(QWidget):
     def __init__(self, *args):
+        #Вторая форма для отображения текста выбранного аудиофайла
         super().__init__()
         self.initUI(args)
 
