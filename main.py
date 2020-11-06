@@ -147,7 +147,7 @@ class Player(QMainWindow):
             title = audio['TIT2']
             artist = audio['TPE1']
             return f'{artist} - {title}'
-
+        
     def check_info_about_song(self, file):
         audio = MP3(file)
         if 'TIT2' in audio:
