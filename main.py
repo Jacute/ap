@@ -116,6 +116,8 @@ class Player(QMainWindow):
     def update_position(self, position):
         if position > 0:
             self.now_playing_track()
+        if self.player.isMuted():
+            self.setWindowTitle('Audioplayer')
         self.play_time.setText(time(position))
         self.time_slider.setValue(position)
 
