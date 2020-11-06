@@ -36,13 +36,13 @@ class Player(QMainWindow):
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
         self.check_text.triggered.connect(self.check_text_of_song)
-        self.play.clicked.connect(self.play_playlist)
-        self.pause.clicked.connect(self.pause_playlist)
+        self.play.clicked.connect(self.play_player)
+        self.pause.clicked.connect(self.pause_player)
         self.clear_playlist.triggered.connect(self.delete_all)
         self.mix_playlist.triggered.connect(self.mix)
         self.next.clicked.connect(self.next_song)
         self.previous.clicked.connect(self.previous_song)
-        self.stop.clicked.connect(self.stop_playlist)
+        self.stop.clicked.connect(self.stop_player)
         self.volume_slider.valueChanged[int].connect(self.change_vol)
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
@@ -67,6 +67,7 @@ class Player(QMainWindow):
             self.add(audiofiles)
 
     def mix(self):
+        #Перемешивание
         self.playlist.clear()
         self.list_of_songs.clear()
         shuffle(self.list_of_ways_to_files)
@@ -77,6 +78,7 @@ class Player(QMainWindow):
         self.album_pic.hide()
 
     def delete(self):
+        #Удаление выбранных аудиофайлов из плейлиста
         items = self.list_of_songs.selectedItems()
         for item in items:
             index = self.list_of_songs.row(item)
@@ -86,47 +88,58 @@ class Player(QMainWindow):
             self.now_playing_track()
 
     def delete_all(self):
+        #Удаление плейлиста полностью
         self.playlist.clear()
         self.list_of_songs.clear()
         self.list_of_ways_to_files = list()
         self.now_playing_track()
 
-    def play_playlist(self):
+    def play_player(self):
+        #Проигрывание
         self.player.play()
         self.now_playing_track()
 
-    def pause_playlist(self):
+    def pause_player(self):
+        #Пауза
         self.player.pause()
 
-    def stop_playlist(self):
+    def stop_player(self):
+        #Остановка плеера
         self.player.stop()
 
     def next_song(self):
+        # Переключение на следующий аудиофайл
         self.playlist.next()
         self.now_playing_track()
 
     def previous_song(self):
+        #Переключение на предыдущий аудиофайл
         self.playlist.previous()
         self.now_playing_track()
 
     def change_vol(self):
+        #Изменение громкости
         self.player.setVolume(self.volume_slider.value())
 
     def update_duration(self, duration):
+        #Вывод длительности аудиофайла
         self.time_slider.setMaximum(duration)
         self.end_time.setText(time(duration))
 
     def update_position(self, position):
+        #Изменение позиции QSlider'а по мере продвижения аудиофайла
         if position > 0:
             self.now_playing_track()
         self.play_time.setText(time(position))
         self.time_slider.setValue(position)
 
     def change_pos(self):
+        #Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
         if self.player.duration() != self.player.position() and self.player.duration() != 0:
             self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
+        #Вывод всяческой информации о песне, которая играет в данный момент
         if self.playlist.isEmpty() or self.player.isMuted():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
@@ -138,6 +151,7 @@ class Player(QMainWindow):
             self.getting_album_pic(track)
 
     def get_title(self, file):
+        #Получение  заголовка для окна
         audio = MP3(file)
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
@@ -152,6 +166,7 @@ class Player(QMainWindow):
         return f'{artist} - {title}'
 
     def check_info_about_song(self, file):
+        #Получение всей основной информации о песне из метаданных
         audio = MP3(file)
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
@@ -177,6 +192,7 @@ class Player(QMainWindow):
                f' Год: {year}.'
 
     def getting_album_pic(self, track):
+        #Получение обложки альбома из метаданных
         cover_name = 'cover.png'
         audio = ID3(track)
         data = audio.getall("APIC")
@@ -191,6 +207,7 @@ class Player(QMainWindow):
             self.album_pic.hide()
 
     def check_text_of_song(self):
+        #Просмотр текста песни из метаданныъ
         audio = ID3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
         if 'COMM::XXX' in audio:
             self.text = str(audio['COMM::XXX'])
