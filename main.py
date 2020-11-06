@@ -2,9 +2,11 @@ import sys
 import os
 
 from mutagen.id3 import ID3
+from mutagen.mp3 import MP3
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QTextEdit
 from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
 
@@ -72,6 +74,7 @@ class Player(QMainWindow):
             self.list_of_songs.addItem(self.get_title(i))
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
         self.setWindowTitle('Audioplayer')
+        self.album_pic.hide()
 
     def delete(self):
         items = self.list_of_songs.selectedItems()
@@ -116,8 +119,6 @@ class Player(QMainWindow):
     def update_position(self, position):
         if position > 0:
             self.now_playing_track()
-        if self.player.isMuted():
-            self.setWindowTitle('Audioplayer')
         self.play_time.setText(time(position))
         self.time_slider.setValue(position)
 
@@ -126,32 +127,32 @@ class Player(QMainWindow):
             self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
-        if self.playlist.isEmpty():
+        if self.playlist.isEmpty() or self.player.isMuted():
             self.setWindowTitle('Audioplayer')
+            self.end_time.setText('0:00')
+            self.album_pic.hide()
         else:
             track = self.list_of_ways_to_files[self.playlist.currentIndex()]
             self.setWindowTitle(self.get_title(track))
             self.statusBar().showMessage(self.check_info_about_song(track))
+            self.getting_album_pic(track)
 
     def get_title(self, file):
-        audio = ID3(file)
+        audio = MP3(file)
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
-        if audio == {}:
-            return 'Unknown artist - Unknown title'
-        elif 'TIT2' in audio and 'TPE1' not in audio:
-            title = audio['TIT2']
-            return f'Unknown artist - {title}'
-        elif 'TIT2' not in audio and 'TPE1' in audio:
-            artist = audio['TPE1']
-            return f'{artist} - Unknown title'
+        if 'TIT2' in audio:
+            title = str(audio['TIT2'])
         else:
-            title = audio['TIT2']
-            artist = audio['TPE1']
-            return f'{artist} - {title}'
+            title = 'Unknown title'
+        if 'TPE1' in audio:
+            artist = str(audio['TPE1'])
+        else:
+            artist = 'Unknown artist'
+        return f'{artist} - {title}'
 
     def check_info_about_song(self, file):
-        audio = ID3(file)
+        audio = MP3(file)
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -176,12 +177,18 @@ class Player(QMainWindow):
                f' Год: {year}.'
 
     def getting_album_pic(self, track):
-        cover_name = '/cover.png'
+        cover_name = 'cover.png'
         audio = ID3(track)
-        data = audio.getall("APIC")[0].data
-        with open(cover_name, mode="wb") as cover:
-            cover.write(data)
-
+        data = audio.getall("APIC")
+        if data != []:
+            with open(cover_name, mode="wb") as cover:
+                cover.write(data[0].data)
+            cover = QPixmap(cover_name)
+            cover = cover.scaled(260, 260)
+            self.album_pic.setPixmap(cover)
+            self.album_pic.show()
+        else:
+            self.album_pic.hide()
 
     def check_text_of_song(self):
         audio = ID3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
