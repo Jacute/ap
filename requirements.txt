@@ -1,3 +1,5 @@
+Python 3.8
+
 Package          Version
 ---------------- -------
 mutagen          1.40.0

@@ -1,7 +1,6 @@
 import sys
 import os
 
-from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QTextEdit
@@ -194,21 +193,21 @@ class Player(QMainWindow):
     def getting_album_pic(self, track):
         #Получение обложки альбома из метаданных
         cover_name = 'cover.png'
-        audio = ID3(track)
-        data = audio.getall("APIC")
-        if data != []:
+        audio = MP3(track)
+        if 'APIC:Cover' in audio:
+            cover_binary = audio['APIC:Cover']
             with open(cover_name, mode="wb") as cover:
-                cover.write(data[0].data)
+                cover.write(cover_binary.data)
             cover = QPixmap(cover_name)
-            cover = cover.scaled(260, 260)
+            cover = cover.scaled(251, 251)
             self.album_pic.setPixmap(cover)
             self.album_pic.show()
         else:
             self.album_pic.hide()
 
     def check_text_of_song(self):
-        #Просмотр текста песни из метаданныъ
-        audio = ID3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
+        #Просмотр текста песни из метаданных
+        audio = MP3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
         if 'COMM::XXX' in audio:
             self.text = str(audio['COMM::XXX'])
         else:
