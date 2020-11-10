@@ -238,7 +238,8 @@ class Player(QMainWindow):
                     file_name = v.title
                     music_file = f"{file_name}.{audio_extension}"
                     base = os.path.splitext(music_file)[0]
-                    os.rename(music_file,'download_from_youtube/' + base + ".mp3")
+                    os.mkdir("download_from_youtube")
+                    os.rename(music_file, 'download_from_youtube/' + base + ".mp3")
                     print("Скачивание успешно завершено!")
                     #self.add(['"download_from_youtube/" + base + ".mp3"'])
         except:
