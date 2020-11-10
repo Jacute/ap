@@ -182,6 +182,7 @@
     <addaction name="add_folder"/>
     <addaction name="delete_track"/>
     <addaction name="check_text"/>
+    <addaction name="action_youtube"/>
    </widget>
    <widget class="QMenu" name="playlist_menu">
     <property name="title">
@@ -232,6 +233,16 @@
   <action name="check_text">
    <property name="text">
     <string>Просмотреть текст выбранной песни</string>
+   </property>
+  </action>
+  <action name="download">
+   <property name="text">
+    <string>Скачать музыку с Youtube и добавить в плейлист</string>
+   </property>
+  </action>
+  <action name="action_youtube">
+   <property name="text">
+    <string>Скачать аудиофайл с Yotube и добавить в плейлист</string>
    </property>
   </action>
  </widget>

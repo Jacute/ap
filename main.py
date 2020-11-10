@@ -1,9 +1,10 @@
 import sys
 import os
+import pafy
 
 from mutagen.mp3 import MP3
 from random import shuffle
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QTextEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, QInputDialog
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
@@ -46,6 +47,7 @@ class Player(QMainWindow):
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
         self.time_slider.valueChanged[int].connect(self.change_pos)
+        self.action_youtube.triggered.connect(self.download_from_youtube)
 
     def add(self, fnames):
         if fnames == False:
@@ -214,6 +216,33 @@ class Player(QMainWindow):
             self.text = 'Unknown text'
         self.form_for_text = SecondForm(self, self.text)
         self.form_for_text.show()
+
+    def download_from_youtube(self):
+        try:
+            url, ok_pressed = QInputDialog.getText(self, "Url", "Введите url")
+            if ok_pressed:
+                v = pafy.new(url)
+                streams = v.audiostreams
+                available_streams = {}
+                count = 1
+                for stream in streams:
+                    available_streams[count] = stream
+                    print(f"{count}: {stream}")
+                    count += 1
+                stream_count, ok_pressed = QInputDialog.getInt(self, "Номер качества аудиофайла",
+                                                               "Введите номер", 1, 1, len(available_streams), 1)
+                if ok_pressed:
+                    d = streams[stream_count - 1].download()
+                    audio_extension = str(available_streams[stream_count])
+                    audio_extension = audio_extension.split("@")[0].split(":")[1]
+                    file_name = v.title
+                    music_file = f"{file_name}.{audio_extension}"
+                    base = os.path.splitext(music_file)[0]
+                    os.rename(music_file,'download_from_youtube/' + base + ".mp3")
+                    print("Скачивание успешно завершено!")
+                    #self.add(['"download_from_youtube/" + base + ".mp3"'])
+        except:
+            self.download_from_youtube()
 
 
 class SecondForm(QWidget):
