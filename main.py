@@ -75,7 +75,7 @@ class Player(QMainWindow):
             self.list_of_songs.addItem(self.get_title(i))
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
         self.setWindowTitle('Audioplayer')
-        self.album_pic.hide()
+        self.now_playing_track()
 
     def delete(self):
         #Удаление выбранных аудиофайлов из плейлиста
@@ -140,7 +140,7 @@ class Player(QMainWindow):
 
     def now_playing_track(self):
         #Вывод всяческой информации о песне, которая играет в данный момент
-        if self.playlist.isEmpty():
+        if self.playlist.isEmpty() or not self.player.isSeekable():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
             self.album_pic.hide()
