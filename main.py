@@ -47,7 +47,6 @@ class Player(QMainWindow):
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
         self.time_slider.valueChanged[int].connect(self.change_pos)
-        self.action_youtube.triggered.connect(self.download_from_youtube)
 
     def add(self, fnames):
         if fnames == False:
@@ -217,42 +216,14 @@ class Player(QMainWindow):
         self.form_for_text = SecondForm(self, self.text)
         self.form_for_text.show()
 
-    def download_from_youtube(self):
-        try:
-            url, ok_pressed = QInputDialog.getText(self, "Url", "Введите url")
-            if ok_pressed:
-                v = pafy.new(url)
-                streams = v.audiostreams
-                available_streams = {}
-                count = 1
-                for stream in streams:
-                    available_streams[count] = stream
-                    print(f"{count}: {stream}")
-                    count += 1
-                stream_count, ok_pressed = QInputDialog.getInt(self, "Номер качества аудиофайла",
-                                                               "Введите номер", 1, 1, len(available_streams), 1)
-                if ok_pressed:
-                    d = streams[stream_count - 1].download()
-                    audio_extension = str(available_streams[stream_count])
-                    audio_extension = audio_extension.split("@")[0].split(":")[1]
-                    file_name = v.title
-                    music_file = f"{file_name}.{audio_extension}"
-                    base = os.path.splitext(music_file)[0]
-                    os.mkdir("download_from_youtube")
-                    os.rename(music_file, 'download_from_youtube/' + base + ".mp3")
-                    print("Скачивание успешно завершено!")
-                    #self.add(['"download_from_youtube/" + base + ".mp3"'])
-        except:
-            self.download_from_youtube()
-
 
 class SecondForm(QWidget):
     def __init__(self, *args):
         #Вторая форма для отображения текста выбранного аудиофайла
         super().__init__()
-        self.initUI(args)
+        self.setupUI(args)
 
-    def initUI(self, args):
+    def setupUI(self, args):
         self.setGeometry(300, 300, 800, 600)
         self.setWindowTitle('Текст')
         self.txt = QTextEdit(self)

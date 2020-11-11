@@ -165,6 +165,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -182,7 +183,6 @@
     <addaction name="add_folder"/>
     <addaction name="delete_track"/>
     <addaction name="check_text"/>
-    <addaction name="action_youtube"/>
    </widget>
    <widget class="QMenu" name="playlist_menu">
     <property name="title">
@@ -194,7 +194,6 @@
    <addaction name="audio_menu"/>
    <addaction name="playlist_menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="add_track">
    <property name="text">
     <string>Добавить аудиофайл(ы)</string>
@@ -202,7 +201,7 @@
   </action>
   <action name="delete_track">
    <property name="text">
-    <string>Удалить выбранные аудиофайлы</string>
+    <string>Удалить выбранные аудиофайл(ы)</string>
    </property>
   </action>
   <action name="mix_playlist">
@@ -243,6 +242,11 @@
   <action name="action_youtube">
    <property name="text">
     <string>Скачать аудиофайл с Yotube и добавить в плейлист</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Онлайн аудиоплеер</string>
    </property>
   </action>
  </widget>
