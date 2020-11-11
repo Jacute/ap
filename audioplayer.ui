@@ -182,14 +182,17 @@
     <addaction name="add_track"/>
     <addaction name="add_folder"/>
     <addaction name="delete_track"/>
+    <addaction name="mix_tracks"/>
+    <addaction name="clear"/>
     <addaction name="check_text"/>
    </widget>
    <widget class="QMenu" name="playlist_menu">
     <property name="title">
-     <string>Плейлист</string>
+     <string>Плейлисты</string>
     </property>
-    <addaction name="mix_playlist"/>
-    <addaction name="clear_playlist"/>
+    <addaction name="add_tracks_to_playlist"/>
+    <addaction name="del_playlist"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="audio_menu"/>
    <addaction name="playlist_menu"/>
@@ -247,6 +250,26 @@
   <action name="action_2">
    <property name="text">
     <string>Онлайн аудиоплеер</string>
+   </property>
+  </action>
+  <action name="mix_tracks">
+   <property name="text">
+    <string>Перемешать список треков</string>
+   </property>
+  </action>
+  <action name="clear">
+   <property name="text">
+    <string>Очистить список треков</string>
+   </property>
+  </action>
+  <action name="add_tracks_to_playlist">
+   <property name="text">
+    <string>Добавить все треки в плейлист</string>
+   </property>
+  </action>
+  <action name="del_playlist">
+   <property name="text">
+    <string>Удалить плейлист</string>
    </property>
   </action>
  </widget>

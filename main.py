@@ -3,8 +3,10 @@ import os
 import pafy
 
 from mutagen.mp3 import MP3
+from mutagen import MutagenError
 from random import shuffle
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, QInputDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
+    QInputDialog, QAction, QLabel
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
@@ -28,18 +30,21 @@ class Player(QMainWindow):
         self.player.setPlaylist(self.playlist)
         self.list_of_ways_to_files = list()
         self.player.setVolume(50)
+        self.list_of_names_of_playlists = list()
+        self.list_of_tracks_of_playlists = list()
         self.setupUi()
 
     def setupUi(self):
         self.setWindowTitle('Audioplayer')
+        self.check_playlists()
         self.add_track.triggered.connect(self.add)
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
         self.check_text.triggered.connect(self.check_text_of_song)
         self.play.clicked.connect(self.play_player)
         self.pause.clicked.connect(self.pause_player)
-        self.clear_playlist.triggered.connect(self.delete_all)
-        self.mix_playlist.triggered.connect(self.mix)
+        self.clear.triggered.connect(self.delete_all)
+        self.mix_tracks.triggered.connect(self.mix)
         self.next.clicked.connect(self.next_song)
         self.previous.clicked.connect(self.previous_song)
         self.stop.clicked.connect(self.stop_player)
@@ -47,17 +52,24 @@ class Player(QMainWindow):
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
         self.time_slider.valueChanged[int].connect(self.change_pos)
+        self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
+        self.del_playlist.triggered.connect(self.delete_playlist)
 
     def add(self, fnames):
         if fnames == False:
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
                 'Аудиофайл (*.mp3)')[0]
-        if fnames != ['']:
-            for i in fnames:
-                self.list_of_songs.addItem(self.get_title(i))
-                self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
-            self.list_of_ways_to_files.extend(fnames)
+        try:
+            if fnames != ['']:
+                for i in fnames:
+                    self.list_of_songs.addItem(self.get_title(i))
+                    self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
+                self.list_of_ways_to_files.extend(fnames)
+        except MutagenError:
+            self.error = ErrorForm()
+            self.error.show()
+
 
     def add_directory(self):
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
@@ -213,13 +225,66 @@ class Player(QMainWindow):
             self.text = str(audio['COMM::XXX'])
         else:
             self.text = 'Unknown text'
-        self.form_for_text = SecondForm(self, self.text)
+        self.form_for_text = TextForm(self, self.text)
         self.form_for_text.show()
 
+    def add_new_playlist(self):
+        #Добавление плейлиста
+        title, ok_pressed = QInputDialog.getText(
+            self, "Плейлист", 'Введите название плейлиста')
+        with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
+            if ok_pressed:
+                all_files = "\n".join(self.list_of_ways_to_files)
+                txt_of_playlists.write(f'{title}\n{all_files}\n\n')
+        self.check_playlists()
 
-class SecondForm(QWidget):
+    def download_playlist(self):
+        #Загрузка плейлиста на QListWidget
+        self.delete_all()
+        name = self.sender().text()
+        ind = self.list_of_names_of_playlists.index(name)
+        fnames = self.list_of_tracks_of_playlists[ind]
+        self.add(*fnames)
+
+    def check_playlists(self):
+        #Проверка playlists.txt на наличие плейлистов
+        with open('playlists.txt', mode='r', encoding='utf-8') as txt_of_playlists:
+            text = txt_of_playlists.read().split('\n\n')
+            if text != ['']:
+                for i in text[:-1]:
+                    playlist = i.split('\n')
+                    if playlist[0] not in self.list_of_names_of_playlists:
+                        self.tmp = QAction(self)
+                        self.tmp.setText(playlist[0])
+                        self.tmp.setObjectName(playlist[0])
+                        self.playlist_menu.addAction(self.tmp)
+                        self.tmp.triggered.connect(self.download_playlist)
+                        self.list_of_names_of_playlists.append(playlist[0])
+                        self.list_of_tracks_of_playlists.append([playlist[1:]])
+
+    def delete_playlist(self):
+        #Удаление плейлиста
+        title, ok_pressed = QInputDialog.getText(
+            self, "Плейлист", 'Введите название плейлиста')
+        if title in self.list_of_names_of_playlists:
+            with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
+                if ok_pressed:
+                    text = list(filter(lambda x: not x.startswith(title),
+                                       txt_of_playlists.read().split('\n\n')))
+                    ind = self.list_of_names_of_playlists.index(title)
+                    del self.list_of_names_of_playlists[ind]
+                    del self.list_of_tracks_of_playlists[ind]
+                    self.playlist_menu.removeAction(self.findChild(QAction, title))
+                    txt_of_playlists.seek(0)
+                    txt_of_playlists.truncate()
+                    txt_of_playlists.write('\n\n'.join(text))
+        else:
+            self.delete_playlist()
+
+
+class TextForm(QWidget):
     def __init__(self, *args):
-        #Вторая форма для отображения текста выбранного аудиофайла
+        #Форма для отображения текста выбранного аудиофайла
         super().__init__()
         self.setupUI(args)
 
@@ -230,6 +295,20 @@ class SecondForm(QWidget):
         self.txt.setText(args[-1])
         self.txt.setReadOnly(True)
         self.txt.resize(800, 600)
+
+
+class ErrorForm(QWidget):
+    def __init__(self):
+        #Форма для ошибки аудиофайла с неправильной директорией
+        super().__init__()
+        self.setupUI()
+
+    def setupUI(self):
+        self.setGeometry(300, 300, 350, 50)
+        self.setWindowTitle('Ошибка')
+        self.txt = QLabel(self)
+        self.txt.setText(f'Ошибка. Задан неправильный путь к аудиофайлу(ам).')
+        self.txt.resize(350, 50)
 
 
 if __name__ == '__main__':

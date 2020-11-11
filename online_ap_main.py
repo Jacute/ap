@@ -45,7 +45,7 @@ class Player(QMainWindow):
 
     def add(self):
         url, ok_pressed = QInputDialog.getText(
-            self, "Введите url видео на YouTube'е", 'YouTube URL',)
+            self, "Введите url видео на YouTube'е", 'YouTube URL')
         try:
             if ok_pressed:
                 video = pafy.new(url)
