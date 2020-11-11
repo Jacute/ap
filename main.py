@@ -48,6 +48,7 @@ class Player(QMainWindow):
         self.time_slider.valueChanged[int].connect(self.change_pos)
 
     def add(self, fnames):
+        #Добавление одного или нескольких аудиофайлов
         if fnames == False:
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
@@ -59,6 +60,7 @@ class Player(QMainWindow):
             self.list_of_ways_to_files.extend(fnames)
 
     def add_directory(self):
+        #Добавление каталога с аудиофайлами
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         if dirlist != '':
             all_files = os.listdir(dirlist)
@@ -223,6 +225,7 @@ class SecondForm(QWidget):
         self.initUI(args)
 
     def initUI(self, args):
+        #Вывод текста в отдельном окне
         self.setGeometry(300, 300, 800, 600)
         self.setWindowTitle('Текст')
         self.txt = QTextEdit(self)
