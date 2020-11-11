@@ -140,7 +140,7 @@ class Player(QMainWindow):
 
     def now_playing_track(self):
         #Вывод всяческой информации о песне, которая играет в данный момент
-        if self.playlist.isEmpty() or self.player.isMuted():
+        if self.playlist.isEmpty():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
             self.album_pic.hide()
