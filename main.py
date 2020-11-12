@@ -1,6 +1,5 @@
 import sys
 import os
-import pafy
 
 from mutagen.mp3 import MP3
 from mutagen import MutagenError
