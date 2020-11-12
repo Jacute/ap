@@ -55,7 +55,8 @@ class Player(QMainWindow):
         self.del_playlist.triggered.connect(self.delete_playlist)
 
     def add(self, fnames):
-        if fnames == False:
+        if not fnames:
+            #Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
                 'Аудиофайл (*.mp3)')[0]
@@ -69,11 +70,11 @@ class Player(QMainWindow):
             self.error = ErrorForm()
             self.error.show()
 
-
     def add_directory(self):
+        #Диалоговое окно для выбора каталога
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         if dirlist != '':
-            all_files = os.listdir(dirlist)
+            all_files = os.listdir(dirlist) #Все файлы в выбранной директории
             audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3'), all_files))]
             self.add(audiofiles)
 
@@ -163,7 +164,7 @@ class Player(QMainWindow):
 
     def get_title(self, file):
         #Получение  заголовка для окна
-        audio = MP3(file)
+        audio = MP3(file) #Считывание всех метаданных
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
         if 'TIT2' in audio:
@@ -178,7 +179,7 @@ class Player(QMainWindow):
 
     def check_info_about_song(self, file):
         #Получение всей основной информации о песне из метаданных
-        audio = MP3(file)
+        audio = MP3(file) #Считывание всех метаданных
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -205,7 +206,7 @@ class Player(QMainWindow):
     def getting_album_pic(self, track):
         #Получение обложки альбома из метаданных
         cover_name = 'cover.png'
-        audio = MP3(track)
+        audio = MP3(track) #Считывание всех метаданных
         if 'APIC:Cover' in audio:
             cover_binary = audio['APIC:Cover']
             with open(cover_name, mode="wb") as cover:
