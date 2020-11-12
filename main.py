@@ -206,9 +206,13 @@ class Player(QMainWindow):
     def getting_album_pic(self, track):
         #Получение обложки альбома из метаданных
         cover_name = 'cover.png'
+        cover_key = ''
         audio = MP3(track) #Считывание всех метаданных
-        if 'APIC:Cover' in audio:
-            cover_binary = audio['APIC:Cover']
+        for i in audio.keys():
+            if i.startswith('APIC'):
+                cover_key = i #Получение правильного ключа с обложкой
+        if cover_key != '':
+            cover_binary = audio[cover_key]
             with open(cover_name, mode="wb") as cover:
                 cover.write(cover_binary.data)
             cover = QPixmap(cover_name)
