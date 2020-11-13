@@ -115,8 +115,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>261</width>
-         <height>71</height>
+         <width>251</width>
+         <height>51</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="volume_layout">
@@ -153,8 +153,8 @@
         <rect>
          <x>0</x>
          <y>70</y>
-         <width>260</width>
-         <height>260</height>
+         <width>251</width>
+         <height>251</height>
         </rect>
        </property>
        <property name="text">
@@ -165,6 +165,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -181,19 +182,21 @@
     <addaction name="add_track"/>
     <addaction name="add_folder"/>
     <addaction name="delete_track"/>
+    <addaction name="mix_tracks"/>
+    <addaction name="clear"/>
     <addaction name="check_text"/>
    </widget>
    <widget class="QMenu" name="playlist_menu">
     <property name="title">
-     <string>Плейлист</string>
+     <string>Плейлисты</string>
     </property>
-    <addaction name="mix_playlist"/>
-    <addaction name="clear_playlist"/>
+    <addaction name="add_tracks_to_playlist"/>
+    <addaction name="del_playlist"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="audio_menu"/>
    <addaction name="playlist_menu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="add_track">
    <property name="text">
     <string>Добавить аудиофайл(ы)</string>
@@ -201,7 +204,7 @@
   </action>
   <action name="delete_track">
    <property name="text">
-    <string>Удалить выбранные аудиофайлы</string>
+    <string>Удалить выбранные аудиофайл(ы)</string>
    </property>
   </action>
   <action name="mix_playlist">
@@ -232,6 +235,41 @@
   <action name="check_text">
    <property name="text">
     <string>Просмотреть текст выбранной песни</string>
+   </property>
+  </action>
+  <action name="download">
+   <property name="text">
+    <string>Скачать музыку с Youtube и добавить в плейлист</string>
+   </property>
+  </action>
+  <action name="action_youtube">
+   <property name="text">
+    <string>Скачать аудиофайл с Yotube и добавить в плейлист</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Онлайн аудиоплеер</string>
+   </property>
+  </action>
+  <action name="mix_tracks">
+   <property name="text">
+    <string>Перемешать список треков</string>
+   </property>
+  </action>
+  <action name="clear">
+   <property name="text">
+    <string>Очистить список треков</string>
+   </property>
+  </action>
+  <action name="add_tracks_to_playlist">
+   <property name="text">
+    <string>Добавить все треки в плейлист</string>
+   </property>
+  </action>
+  <action name="del_playlist">
+   <property name="text">
+    <string>Удалить плейлист</string>
    </property>
   </action>
  </widget>
