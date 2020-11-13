@@ -292,12 +292,12 @@ class TextForm(QWidget):
         self.setupUI(args)
 
     def setupUI(self, args):
-        self.setGeometry(300, 300, 800, 600)
+        self.setGeometry(300, 300, 640, 480)
         self.setWindowTitle('Текст')
         self.txt = QTextEdit(self)
         self.txt.setText(args[-1])
         self.txt.setReadOnly(True)
-        self.txt.resize(800, 600)
+        self.txt.resize(640, 480)
 
 
 class ErrorForm(QWidget):
