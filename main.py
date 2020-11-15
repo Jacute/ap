@@ -41,8 +41,8 @@ class Player(QMainWindow):
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
         self.check_text.triggered.connect(self.check_text_of_song)
-        self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
-        self.del_playlist.triggered.connect(self.delete_playlist)
+        self.add_songs_to_playlist.clicked.connect(self.add_new_playlist)
+        self.delete_playlist.clicked.connect(self.del_playlist)
         self.mix_tracks.triggered.connect(self.mix)
         self.clear.triggered.connect(self.delete_all)
         self.play.clicked.connect(self.play_player)
@@ -265,7 +265,7 @@ class Player(QMainWindow):
                         self.list_of_names_of_playlists.append(playlist[0])
                         self.list_of_tracks_of_playlists.append([playlist[1:]])
 
-    def delete_playlist(self):
+    def del_playlist(self):
         # Удаление плейлиста
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')

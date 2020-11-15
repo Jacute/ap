@@ -191,6 +191,53 @@
         <string/>
        </property>
       </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>330</y>
+         <width>261</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QComboBox" name="playlists">
+          <item>
+           <property name="text">
+            <string>Плейлисты</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="add_songs_to_playlist">
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Добавить все треки в плейлист</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="delete_playlist">
+          <property name="font">
+           <font>
+            <pointsize>9</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Удалить выбранный плейлист из списка</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -202,7 +249,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="audio_menu">
@@ -216,16 +263,7 @@
     <addaction name="clear"/>
     <addaction name="check_text"/>
    </widget>
-   <widget class="QMenu" name="playlist_menu">
-    <property name="title">
-     <string>Плейлисты</string>
-    </property>
-    <addaction name="add_tracks_to_playlist"/>
-    <addaction name="del_playlist"/>
-    <addaction name="separator"/>
-   </widget>
    <addaction name="audio_menu"/>
-   <addaction name="playlist_menu"/>
   </widget>
   <action name="add_track">
    <property name="text">
