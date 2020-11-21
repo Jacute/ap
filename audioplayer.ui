@@ -30,13 +30,8 @@
        <property name="geometry">
         <rect>
          <x>260</x>
-<<<<<<< HEAD
          <y>0</y>
          <width>521</width>
-=======
-         <y>1</y>
-         <width>731</width>
->>>>>>> master
          <height>71</height>
         </rect>
        </property>
@@ -136,15 +131,9 @@
        <property name="geometry">
         <rect>
          <x>260</x>
-<<<<<<< HEAD
          <y>70</y>
          <width>521</width>
          <height>461</height>
-=======
-         <y>71</y>
-         <width>741</width>
-         <height>651</height>
->>>>>>> master
         </rect>
        </property>
        <property name="selectionMode">
@@ -202,7 +191,6 @@
         <string/>
        </property>
       </widget>
-<<<<<<< HEAD
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
@@ -250,8 +238,6 @@
         </item>
        </layout>
       </widget>
-=======
->>>>>>> master
      </widget>
     </item>
    </layout>
@@ -262,11 +248,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-<<<<<<< HEAD
      <width>800</width>
-=======
-     <width>1024</width>
->>>>>>> master
      <height>23</height>
     </rect>
    </property>
@@ -281,17 +263,6 @@
     <addaction name="clear"/>
     <addaction name="check_text"/>
    </widget>
-<<<<<<< HEAD
-=======
-   <widget class="QMenu" name="playlist_menu">
-    <property name="title">
-     <string>Плейлисты</string>
-    </property>
-    <addaction name="add_tracks_to_playlist"/>
-    <addaction name="del_playlist"/>
-    <addaction name="separator"/>
-   </widget>
->>>>>>> master
    <addaction name="audio_menu"/>
   </widget>
   <action name="add_track">
