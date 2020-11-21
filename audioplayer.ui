@@ -200,7 +200,7 @@
          <height>201</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="playlists_layout">
         <item>
          <widget class="QComboBox" name="playlists">
           <item>
