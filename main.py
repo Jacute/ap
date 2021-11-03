@@ -5,7 +5,7 @@ from mutagen.mp3 import MP3
 from mutagen import MutagenError
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
-    QInputDialog, QAction, QLabel
+    QInputDialog, QLabel
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
@@ -13,7 +13,7 @@ from PyQt5 import uic
 
 
 def time(ms):
-    #Расчёт длительности трека
+    # Расчёт длительности трека
     h, r = divmod(ms, 3600000)
     m, r = divmod(r, 60000)
     s, _ = divmod(r, 1000)
@@ -23,7 +23,8 @@ def time(ms):
 class Player(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('audioplayer.ui', self)
+        uic.loadUi('audioplayer.ui', self)  # Загрузка .ui файла
+        # Инициализация
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.player.setPlaylist(self.playlist)
@@ -40,10 +41,12 @@ class Player(QMainWindow):
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
         self.check_text.triggered.connect(self.check_text_of_song)
+        self.add_songs_to_playlist.clicked.connect(self.add_new_playlist)
+        self.delete_playlist.clicked.connect(self.delete_playlist_from_list)
+        self.mix_tracks.triggered.connect(self.mix)
+        self.clear.triggered.connect(self.delete_all)
         self.play.clicked.connect(self.play_player)
         self.pause.clicked.connect(self.pause_player)
-        self.clear.triggered.connect(self.delete_all)
-        self.mix_tracks.triggered.connect(self.mix)
         self.next.clicked.connect(self.next_song)
         self.previous.clicked.connect(self.previous_song)
         self.stop.clicked.connect(self.stop_player)
@@ -51,12 +54,11 @@ class Player(QMainWindow):
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
         self.time_slider.valueChanged[int].connect(self.change_pos)
-        self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
-        self.del_playlist.triggered.connect(self.delete_playlist)
+        self.playlists.currentIndexChanged.connect(self.download_playlist)
 
     def add(self, fnames):
         if not fnames:
-            #Диалоговое окно для выбора аудиофайлов
+            # Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
                 'Аудиофайл (*.mp3)')[0]
@@ -67,56 +69,65 @@ class Player(QMainWindow):
                     self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
                 self.list_of_ways_to_files.extend(fnames)
         except MutagenError:
-            self.error = ErrorForm()
-            self.error.show()
+            error = ErrorForm()
+            error.show()
 
     def add_directory(self):
-        #Диалоговое окно для выбора каталога
-        dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
-        if dirlist != '':
-            all_files = os.listdir(dirlist) #Все файлы в выбранной директории
-            audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3'), all_files))]
+        # Диалоговое окно для выбора каталога
+        directory = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
+        if directory != '':
+            # Получаем все файлы в выбранной директории
+            all_files = os.listdir(directory)
+            # Сортируем файлы на те, которые оканчиваются на .mp3
+            audiofiles = [directory + '/' + i for i in list(filter(lambda x: x.endswith('.mp3'), all_files))]
             self.add(audiofiles)
 
     def mix(self):
-        #Перемешивание
+        # Перемешивание
+        # Очищаем MediaPlaylist, а также ListWidget
         self.playlist.clear()
         self.list_of_songs.clear()
+        # Перемешиваем список с путями к файлам
         shuffle(self.list_of_ways_to_files)
         for i in self.list_of_ways_to_files:
+            # Заново получаем все данные об аудиофайлах и наполняем
+            # MediaPlaylist и ListWidget
             self.list_of_songs.addItem(self.get_title(i))
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
         self.setWindowTitle('Audioplayer')
         self.now_playing_track()
 
     def delete(self):
-        #Удаление выбранных аудиофайлов из плейлиста
+        # Удаление выбранных аудиофайлов из плейлиста
+        # Получаем список выбранных строк в ListWidget
         items = self.list_of_songs.selectedItems()
         for item in items:
+            # Удаляем выбранные строки из списка с путями к файлам,
+            # ListWidget и MediaPlaylist
             index = self.list_of_songs.row(item)
             self.list_of_songs.takeItem(index)
             self.playlist.removeMedia(index)
             del self.list_of_ways_to_files[index]
-            self.now_playing_track()
+        self.now_playing_track()
 
     def delete_all(self):
-        #Удаление плейлиста полностью
+        # Удаление плейлиста полностью
         self.playlist.clear()
         self.list_of_songs.clear()
         self.list_of_ways_to_files = list()
         self.now_playing_track()
 
     def play_player(self):
-        #Проигрывание
+        # Проигрывание
         self.player.play()
         self.now_playing_track()
 
     def pause_player(self):
-        #Пауза
+        # Пауза
         self.player.pause()
 
     def stop_player(self):
-        #Остановка плеера
+        # Остановка плеера
         self.player.stop()
 
     def next_song(self):
@@ -125,34 +136,37 @@ class Player(QMainWindow):
         self.now_playing_track()
 
     def previous_song(self):
-        #Переключение на предыдущий аудиофайл
+        # Переключение на предыдущий аудиофайл
         self.playlist.previous()
         self.now_playing_track()
 
     def change_vol(self):
-        #Изменение громкости
+        # Изменение громкости
+        # Громкость в player ставится в соответствии значению volume_slider'а
         self.player.setVolume(self.volume_slider.value())
 
     def update_duration(self, duration):
-        #Вывод длительности аудиофайла
+        # Установка максимального значения time_slider'а и вывод длительности
+        # аудиофайла на end_time (QLabel справа от time_slider)
         self.time_slider.setMaximum(duration)
         self.end_time.setText(time(duration))
 
     def update_position(self, position):
-        #Изменение позиции QSlider'а по мере продвижения аудиофайла
-        if position > 0:
-            self.now_playing_track()
+        # Изменение позиции QSlider'а по мере продвижения аудиофайла
         self.play_time.setText(time(position))
         self.time_slider.setValue(position)
 
     def change_pos(self):
-        #Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
+        # Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
         if self.player.duration() != self.player.position() and self.player.duration() != 0:
             self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
-        #Вывод всяческой информации о песне, которая играет в данный момент
+        # Вывод всяческой информации о песне, которая играет в данный момент
         if self.playlist.isEmpty() or not self.player.isSeekable():
+            # Если сейчас ничего не играет или плейлист пустой, то
+            # длительность аудиофайла и заголовок окна сбрасываются, а
+            # обложка альбома прячется
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
             self.album_pic.hide()
@@ -163,10 +177,8 @@ class Player(QMainWindow):
             self.getting_album_pic(track)
 
     def get_title(self, file):
-        #Получение  заголовка для окна
-        audio = MP3(file) #Считывание всех метаданных
-        '''TDRC (год), TALB (альбом), TIT2 (название трека),
-        TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
+        # Получение  заголовка для окна
+        audio = MP3(file)  # Считывание всех метаданных
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -178,8 +190,11 @@ class Player(QMainWindow):
         return f'{artist} - {title}'
 
     def check_info_about_song(self, file):
-        #Получение всей основной информации о песне из метаданных
-        audio = MP3(file) #Считывание всех метаданных
+        # Получение всей основной информации о песне из метаданных
+        audio = MP3(file)  # Считывание всех метаданных
+        # Ключи к метаданным: TDRC - год, TALB - альбом,
+        # TIT2 - название трека, TPE1 - исполнитель, TCON - жанр,
+        # COMM:XXX - текст, APIC - обложка альбома
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -204,13 +219,13 @@ class Player(QMainWindow):
                f' Год: {year}.'
 
     def getting_album_pic(self, track):
-        #Получение обложки альбома из метаданных
+        # Получение обложки альбома из метаданных
         cover_name = 'cover.png'
         cover_key = ''
-        audio = MP3(track) #Считывание всех метаданных
+        audio = MP3(track)  # Считывание всех метаданных
         for i in audio.keys():
             if i.startswith('APIC'):
-                cover_key = i #Получение правильного ключа с обложкой
+                cover_key = i  # Получение правильного ключа с обложкой
         if cover_key != '':
             cover_binary = audio[cover_key]
             with open(cover_name, mode="wb") as cover:
@@ -223,7 +238,7 @@ class Player(QMainWindow):
             self.album_pic.hide()
 
     def check_text_of_song(self):
-        #Просмотр текста песни из метаданных
+        # Просмотр текста песни из метаданных
         audio = MP3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
         if 'COMM::XXX' in audio:
             self.text = str(audio['COMM::XXX'])
@@ -233,77 +248,95 @@ class Player(QMainWindow):
         self.form_for_text.show()
 
     def add_new_playlist(self):
-        #Добавление плейлиста
+        # Добавление плейлиста
+        # Диалоговое окно с вводом названия плейлиста
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')
         with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
             if ok_pressed:
+                # Получение всех путей к файлам в виде строки, разделённой \n
                 all_files = "\n".join(self.list_of_ways_to_files)
+                # Запись в playlists.txt (в начале идёт название, потом все
+                # пути к аудиофайлам, разделённые \n, а в конце \n\n
                 txt_of_playlists.write(f'{title}\n{all_files}\n\n')
         self.check_playlists()
 
     def download_playlist(self):
-        #Загрузка плейлиста на QListWidget
-        self.delete_all()
-        name = self.sender().text()
-        ind = self.list_of_names_of_playlists.index(name)
-        fnames = self.list_of_tracks_of_playlists[ind]
-        self.add(*fnames)
+        # Загрузка плейлиста на QListWidget
+        # self.playlists - ComboBox
+        name = self.playlists.currentText()  # Выбранный текст в ComboBox
+        if name != 'Плейлисты':  # "Плейлисты" - начальное значение ComboBox'а
+            # Удаление всех текущих аудиофайлов
+            self.delete_all()
+            # Получаем индекс данного плейлиста в списке с названиями плейлистов
+            ind = self.list_of_names_of_playlists.index(name)
+            # Получаем все пути к файлам и загружаем их
+            file_names = self.list_of_tracks_of_playlists[ind]
+            self.add(*file_names)
 
     def check_playlists(self):
-        #Проверка playlists.txt на наличие плейлистов
+        # Проверка playlists.txt на наличие плейлистов
         with open('playlists.txt', mode='r', encoding='utf-8') as txt_of_playlists:
+            # Считываем playlists.txt и получаем список из плейлистов (text)
             text = txt_of_playlists.read().split('\n\n')
             if text != ['']:
+                # Цикл всех плейлистов кроме последнего,
+                # так как в последнем пустая строка
                 for i in text[:-1]:
+                    # Разделяем все данные текущего плейлиста
                     playlist = i.split('\n')
+                    # Если данного названия плейлиста нету в списке текущих
+                    # загруженных плейлистов, то мы его загружаем
                     if playlist[0] not in self.list_of_names_of_playlists:
-                        self.tmp = QAction(self)
-                        self.tmp.setText(playlist[0])
-                        self.tmp.setObjectName(playlist[0])
-                        self.playlist_menu.addAction(self.tmp)
-                        self.tmp.triggered.connect(self.download_playlist)
+                        # Добавляем название плейлиста в ComboBox
+                        self.playlists.addItem(playlist[0])
+                        # Добавляем название плейлиста, а также его содержимое
+                        # в соответствующие плейлисты
                         self.list_of_names_of_playlists.append(playlist[0])
                         self.list_of_tracks_of_playlists.append([playlist[1:]])
 
-    def delete_playlist(self):
-        #Удаление плейлиста
-        title, ok_pressed = QInputDialog.getText(
-            self, "Плейлист", 'Введите название плейлиста')
-        if title in self.list_of_names_of_playlists:
+    def delete_playlist_from_list(self):
+        # Удаление плейлиста
+        name = self.playlists.currentText()  # Выбранный текст в ComboBox
+        if name != 'Плейлисты':  # "Плейлисты" - начальное значение ComboBox'а
+            # Получаем название плейлиста, который хотим удалить
+            title = self.list_of_names_of_playlists[
+                self.playlists.currentIndex() - 1]
             with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
-                if ok_pressed:
-                    text = list(filter(lambda x: not x.startswith(title),
-                                       txt_of_playlists.read().split('\n\n')))
-                    ind = self.list_of_names_of_playlists.index(title)
-                    del self.list_of_names_of_playlists[ind]
-                    del self.list_of_tracks_of_playlists[ind]
-                    self.playlist_menu.removeAction(self.findChild(QAction, title))
-                    txt_of_playlists.seek(0)
-                    txt_of_playlists.truncate()
-                    txt_of_playlists.write('\n\n'.join(text))
-        else:
-            self.delete_playlist()
+                # Получаем плейлисты, исключая тот, который хотим удалить
+                text = list(filter(lambda x: not x.startswith(title),
+                                   txt_of_playlists.read().split('\n\n')))
+                # Получаем индекс плейлиста, который хотим удалить
+                ind = self.list_of_names_of_playlists.index(title)
+                # Удаляем плейлист из списков с данными о нём
+                del self.list_of_names_of_playlists[ind]
+                del self.list_of_tracks_of_playlists[ind]
+                # Удаляем плейлист из ComboBox
+                self.playlists.removeItem(ind + 1)
+                # Удаляем плейлист из playlists.txt
+                txt_of_playlists.seek(0)
+                txt_of_playlists.truncate()
+                txt_of_playlists.write('\n\n'.join(text))
 
 
 class TextForm(QWidget):
     def __init__(self, *args):
-        #Форма для отображения текста выбранного аудиофайла
+        # Форма для отображения текста выбранного аудиофайла
         super().__init__()
         self.setupUI(args)
 
     def setupUI(self, args):
-        self.setGeometry(300, 300, 800, 600)
+        self.setGeometry(300, 300, 640, 480)
         self.setWindowTitle('Текст')
         self.txt = QTextEdit(self)
         self.txt.setText(args[-1])
         self.txt.setReadOnly(True)
-        self.txt.resize(800, 600)
+        self.txt.resize(640, 480)
 
 
 class ErrorForm(QWidget):
     def __init__(self):
-        #Форма для ошибки аудиофайла с неправильной директорией
+        # Форма для ошибки аудиофайла с неправильной директорией
         super().__init__()
         self.setupUI()
 
