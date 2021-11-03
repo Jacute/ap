@@ -102,8 +102,8 @@
         <rect>
          <x>260</x>
          <y>71</y>
-         <width>741</width>
-         <height>651</height>
+         <width>731</width>
+         <height>641</height>
         </rect>
        </property>
        <property name="selectionMode">
@@ -172,7 +172,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="audio_menu">
@@ -194,8 +194,15 @@
     <addaction name="del_playlist"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="audiplayer_menu">
+    <property name="title">
+     <string>Аудиоплеер</string>
+    </property>
+    <addaction name="change_theme"/>
+   </widget>
    <addaction name="audio_menu"/>
    <addaction name="playlist_menu"/>
+   <addaction name="audiplayer_menu"/>
   </widget>
   <action name="add_track">
    <property name="text">
@@ -270,6 +277,11 @@
   <action name="del_playlist">
    <property name="text">
     <string>Удалить плейлист</string>
+   </property>
+  </action>
+  <action name="change_theme">
+   <property name="text">
+    <string>Сменить тему</string>
    </property>
   </action>
  </widget>

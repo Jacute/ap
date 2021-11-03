@@ -6,7 +6,7 @@ from mutagen import MutagenError
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
     QInputDialog, QAction, QLabel
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QFile, QTextStream, QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
@@ -27,10 +27,17 @@ class Player(QMainWindow):
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.player.setPlaylist(self.playlist)
-        self.list_of_ways_to_files = list()
         self.player.setVolume(50)
+        self.setFixedWidth(1024)
+        self.setFixedHeight(778)
+        self.list_of_ways_to_files = list()
         self.list_of_names_of_playlists = list()
         self.list_of_tracks_of_playlists = list()
+        self.path = "light/stylesheet.qss"
+        file = QFile(self.path)
+        file.open(QFile.ReadOnly | QFile.Text)
+        stream = QTextStream(file)
+        app.setStyleSheet(stream.readAll())
         self.setupUi()
 
     def setupUi(self):
@@ -53,6 +60,7 @@ class Player(QMainWindow):
         self.time_slider.valueChanged[int].connect(self.change_pos)
         self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
         self.del_playlist.triggered.connect(self.delete_playlist)
+        self.change_theme.triggered.connect(self.change_theme_func)
 
     def add(self, fnames):
         if not fnames:
@@ -223,7 +231,7 @@ class Player(QMainWindow):
             self.album_pic.hide()
 
     def check_text_of_song(self):
-        #Просмотр текста песни из метаданных
+        # Просмотр текста песни из метаданных
         audio = MP3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
         if 'COMM::XXX' in audio:
             self.text = str(audio['COMM::XXX'])
@@ -233,7 +241,7 @@ class Player(QMainWindow):
         self.form_for_text.show()
 
     def add_new_playlist(self):
-        #Добавление плейлиста
+        # Добавление плейлиста
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')
         with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
@@ -243,7 +251,7 @@ class Player(QMainWindow):
         self.check_playlists()
 
     def download_playlist(self):
-        #Загрузка плейлиста на QListWidget
+        # Загрузка плейлиста на QListWidget
         self.delete_all()
         name = self.sender().text()
         ind = self.list_of_names_of_playlists.index(name)
@@ -251,7 +259,7 @@ class Player(QMainWindow):
         self.add(*fnames)
 
     def check_playlists(self):
-        #Проверка playlists.txt на наличие плейлистов
+        # Проверка playlists.txt на наличие плейлистов
         with open('playlists.txt', mode='r', encoding='utf-8') as txt_of_playlists:
             text = txt_of_playlists.read().split('\n\n')
             if text != ['']:
@@ -267,7 +275,7 @@ class Player(QMainWindow):
                         self.list_of_tracks_of_playlists.append([playlist[1:]])
 
     def delete_playlist(self):
-        #Удаление плейлиста
+        # Удаление плейлиста
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')
         if title in self.list_of_names_of_playlists:
@@ -285,10 +293,20 @@ class Player(QMainWindow):
         else:
             self.delete_playlist()
 
+    def change_theme_func(self):
+        if self.path.split('/')[0] == 'light':
+            self.path = "dark/stylesheet.qss"
+        else:
+            self.path = "light/stylesheet.qss"
+        file = QFile(self.path)
+        file.open(QFile.ReadOnly | QFile.Text)
+        stream = QTextStream(file)
+        app.setStyleSheet(stream.readAll())
+
 
 class TextForm(QWidget):
     def __init__(self, *args):
-        #Форма для отображения текста выбранного аудиофайла
+        # Форма для отображения текста выбранного аудиофайла
         super().__init__()
         self.setupUI(args)
 
@@ -303,7 +321,7 @@ class TextForm(QWidget):
 
 class ErrorForm(QWidget):
     def __init__(self):
-        #Форма для ошибки аудиофайла с неправильной директорией
+        # Форма для ошибки аудиофайла с неправильной директорией
         super().__init__()
         self.setupUI()
 
