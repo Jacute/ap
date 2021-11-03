@@ -33,11 +33,7 @@ class Player(QMainWindow):
         self.list_of_ways_to_files = list()
         self.list_of_names_of_playlists = list()
         self.list_of_tracks_of_playlists = list()
-        self.path = "light/stylesheet.qss"
-        file = QFile(self.path)
-        file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(file)
-        app.setStyleSheet(stream.readAll())
+        self.album_pic.hide()
         self.setupUi()
 
     def setupUi(self):
@@ -60,7 +56,6 @@ class Player(QMainWindow):
         self.time_slider.valueChanged[int].connect(self.change_pos)
         self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
         self.del_playlist.triggered.connect(self.delete_playlist)
-        self.change_theme.triggered.connect(self.change_theme_func)
 
     def add(self, fnames):
         if not fnames:
@@ -293,16 +288,6 @@ class Player(QMainWindow):
         else:
             self.delete_playlist()
 
-    def change_theme_func(self):
-        if self.path.split('/')[0] == 'light':
-            self.path = "dark/stylesheet.qss"
-        else:
-            self.path = "light/stylesheet.qss"
-        file = QFile(self.path)
-        file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(file)
-        app.setStyleSheet(stream.readAll())
-
 
 class TextForm(QWidget):
     def __init__(self, *args):
@@ -335,6 +320,10 @@ class ErrorForm(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    """file = QFile('dark/stylesheet.qss')
+    file.open(QFile.ReadOnly | QFile.Text)
+    stream = QTextStream(file)
+    app.setStyleSheet(stream.readAll())"""
     ex = Player()
     ex.show()
     sys.exit(app.exec())

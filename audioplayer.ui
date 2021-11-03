@@ -13,7 +13,223 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow::separator
+{
+    border: 0.09em transparent #76797c;
+    background: transparent;
+}
+
+QWidget
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    selection-background-color: #3daee9;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+}
+
+QWidget:disabled
+{
+    color: #454545;
+    background-color: #31363b;
+}
+
+QWidget:disabled:hover
+{
+    background-color: #31363b;
+}
+
+QMenuBar
+{
+    background-color: #31363b;
+    color: #eff0f1;
+}
+
+QMenuBar::item
+{
+    background: transparent;
+}
+
+QMenuBar::item:selected
+{
+    background: transparent;
+}
+
+QMenuBar::item:disabled
+{
+    color: #76797c;
+}
+
+QMenuBar::item:pressed
+{
+    background-color: #3daee9;
+    color: #eff0f1;
+    margin-bottom: -0.09em;
+    padding-bottom: 0.09em;
+}
+
+QMenu
+{
+    color: #eff0f1;
+    margin: 0.09em;
+}
+
+QMenu::icon
+{
+    margin: 0.23em;
+}
+
+QMenu::item
+{
+    /* Add extra padding on the right for the QMenu arrow */
+    padding: 0.23em 1.5em 0.23em 1.3em;
+    border: 0.09em solid transparent;
+    background: transparent;
+}
+
+QMenu::item:selected
+{
+    color: #eff0f1;
+    background-color: #3daee9;
+}
+
+QMenu::item:selected:disabled
+{
+    background-color: #31363b;
+}
+
+QMenu::item:disabled
+{
+    color: #76797c;
+}
+
+QMenu::indicator
+{
+    width: 1em;
+    height: 1em;
+}
+
+QMenu::indicator:non-exclusive:unchecked
+{
+    border-image: url(:/dark/checkbox_unchecked_disabled.svg);
+}
+
+QMenu::indicator:non-exclusive:unchecked:selected
+{
+    border-image: url(:/dark/checkbox_unchecked_disabled.svg);
+}
+
+QMenu::indicator:non-exclusive:checked
+{
+    border-image: url(:/dark/checkbox_checked.svg);
+}
+
+QMenu::indicator:non-exclusive:checked:selected
+{
+    border-image: url(:/dark/checkbox_checked.svg);
+}
+
+QMenu::indicator:exclusive:unchecked
+{
+    border-image: url(:/dark/radio_unchecked_disabled.svg);
+}
+
+QMenu::indicator:exclusive:unchecked:selected
+{
+    border-image: url(:/dark/radio_unchecked_disabled.svg);
+}
+
+QMenu::indicator:exclusive:checked
+{
+    border-image: url(:/dark/radio_checked.svg);
+}
+
+QMenu::indicator:exclusive:checked:selected
+{
+    border-image: url(:/dark/radio_checked.svg);
+}
+
+QMenu::right-arrow
+{
+    margin: 0.23em;
+    border-image: url(:/dark/right_arrow.svg);
+    width: 0.5em;
+    height: 0.8em;
+}
+
+QMenu::right-arrow:disabled
+{
+    border-image: url(:/dark/right_arrow_disabled.svg);
+}
+
+QAbstractItemView
+{
+    alternate-background-color: #31363b;
+    color: #eff0f1;
+    border: 0.09em solid #31363b;
+    border-radius: 0.09em;
+}
+
+QMenuBar::item:focus:!disabled
+{
+    border: 0.04em solid #3daee9;
+}
+
+QTabWidget:focus,
+QCheckBox:focus,
+QRadioButton:focus,
+QSlider:focus
+{
+    border: none;
+}
+
+QMenu::separator
+{
+    height: 0.09em;
+    background-color: #76797c;
+    padding-left: 0.2em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.41em;
+    margin-right: 0.41em;
+}
+
+QMenu::separator
+{
+    height: 0.09em;
+    background-color: #76797c;
+    padding-left: 0.2em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.41em;
+    margin-right: 0.41em;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">QWidget
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    selection-background-color: #3daee9;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+}
+
+QWidget:disabled
+{
+    color: #454545;
+    background-color: #31363b;
+}
+
+QWidget:disabled:hover
+{
+    background-color: #31363b;
+}</string>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QWidget" name="widget" native="true">
@@ -24,7 +240,26 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QWidget
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    selection-background-color: #3daee9;
+    selection-color: #eff0f1;
+    background-clip: border;
+    border-image: none;
+}
+
+QWidget:disabled
+{
+    color: #454545;
+    background-color: #31363b;
+}
+
+QWidget:disabled:hover
+{
+    background-color: #31363b;
+}</string>
       </property>
       <widget class="QWidget" name="horizontalLayoutWidget">
        <property name="geometry">
@@ -38,6 +273,84 @@
        <layout class="QHBoxLayout" name="main_buttons_and_time">
         <item>
          <widget class="QPushButton" name="previous">
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #626568;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
           <property name="text">
            <string>❙◄</string>
           </property>
@@ -45,6 +358,84 @@
         </item>
         <item>
          <widget class="QPushButton" name="play">
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #626568;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
           <property name="text">
            <string>►</string>
           </property>
@@ -52,6 +443,84 @@
         </item>
         <item>
          <widget class="QPushButton" name="pause">
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #626568;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
           <property name="text">
            <string>❙❙</string>
           </property>
@@ -59,6 +528,84 @@
         </item>
         <item>
          <widget class="QPushButton" name="stop">
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #626568;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
           <property name="text">
            <string>⬛</string>
           </property>
@@ -66,6 +613,84 @@
         </item>
         <item>
          <widget class="QPushButton" name="next">
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #626568;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
           <property name="text">
            <string>►❙</string>
           </property>
@@ -73,6 +698,12 @@
         </item>
         <item>
          <widget class="QLabel" name="play_time">
+          <property name="styleSheet">
+           <string notr="true">QLabel
+{
+    border: 0em solid black;
+}</string>
+          </property>
           <property name="text">
            <string>0:00</string>
           </property>
@@ -90,6 +721,12 @@
         </item>
         <item>
          <widget class="QLabel" name="end_time">
+          <property name="styleSheet">
+           <string notr="true">QLabel
+{
+    border: 0em solid black;
+}</string>
+          </property>
           <property name="text">
            <string>0:00</string>
           </property>
@@ -106,6 +743,21 @@
          <height>641</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QListView
+{
+    background-color: #1d2023;
+    border: 0em solid black;
+}
+
+QTreeView:selected,
+QTreeView:!selected,
+QListView:selected,
+QListView:!selected
+{
+    border: 0em solid black;
+}</string>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
@@ -116,12 +768,20 @@
          <x>0</x>
          <y>0</y>
          <width>251</width>
-         <height>51</height>
+         <height>56</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="volume_layout">
         <item>
          <widget class="QLabel" name="volume_label">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>                             Громкость</string>
           </property>
@@ -129,6 +789,92 @@
         </item>
         <item>
          <widget class="QSlider" name="volume_slider">
+          <property name="styleSheet">
+           <string notr="true">QSlider::groove:horizontal {
+    border: 1px solid #999999;
+    height: 8px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
+    border: 1px solid #5c5c5c;
+    width: 18px;
+    margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 3px;
+}
+
+QSlider::handle:vertical
+{
+    background: #1d2023;
+    border: 0.04em solid #626568;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 0.35em;
+}
+
+QSlider:horizontal
+{
+    height: 2em;
+}
+
+QSlider:vertical
+{
+    width: 2em;
+}
+
+QSlider::handle:horizontal
+{
+    margin: -0.23em 0;
+}
+
+QSlider::handle:vertical
+{
+    margin: 0 -0.23em;
+}
+
+QSlider::groove:horizontal,
+QSlider::groove:vertical
+{
+    background: #2c3034;
+    border: 0em solid #31363b;
+    border-radius: 0.19em;
+}
+
+QSlider::groove:vertical
+{
+    width: 0.4em;
+}
+
+QSlider::handle:horizontal:hover,
+QSlider::handle:horizontal:focus,
+QSlider::handle:vertical:hover,
+QSlider::handle:vertical:focus
+{
+    border: 0.04em solid #3daee9;
+}
+
+QSlider::handle:horizontal:!focus:!hover,
+QSlider::handle:vertical:!focus:!hover
+{
+    border: 0.04em solid #626568;
+}
+
+QSlider::sub-page:horizontal,
+QSlider::add-page:vertical
+{
+    background: #3daee9;
+    border-radius: 0.19em;
+}
+
+QSlider::add-page:horizontal,
+QSlider::sub-page:vertical
+{
+    background: #626568;
+    border-radius: 0.19em;
+}</string>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>
@@ -156,6 +902,10 @@
          <width>251</width>
          <height>251</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-style: solid; border-width: 5px; border-color: black;
+</string>
        </property>
        <property name="text">
         <string/>
@@ -194,15 +944,8 @@
     <addaction name="del_playlist"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="audiplayer_menu">
-    <property name="title">
-     <string>Аудиоплеер</string>
-    </property>
-    <addaction name="change_theme"/>
-   </widget>
    <addaction name="audio_menu"/>
    <addaction name="playlist_menu"/>
-   <addaction name="audiplayer_menu"/>
   </widget>
   <action name="add_track">
    <property name="text">
