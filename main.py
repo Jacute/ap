@@ -6,14 +6,14 @@ from mutagen import MutagenError
 from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
     QInputDialog, QAction, QLabel
-from PyQt5.QtCore import QFile, QTextStream, QUrl
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
 
 
 def time(ms):
-    #Расчёт длительности трека
+    # Расчёт длительности трека
     h, r = divmod(ms, 3600000)
     m, r = divmod(r, 60000)
     s, _ = divmod(r, 1000)
@@ -59,7 +59,7 @@ class Player(QMainWindow):
 
     def add(self, fnames):
         if not fnames:
-            #Диалоговое окно для выбора аудиофайлов
+            # Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
                 'Аудиофайл (*.mp3)')[0]
@@ -74,15 +74,15 @@ class Player(QMainWindow):
             self.error.show()
 
     def add_directory(self):
-        #Диалоговое окно для выбора каталога
+        # Диалоговое окно для выбора каталога
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         if dirlist != '':
-            all_files = os.listdir(dirlist) #Все файлы в выбранной директории
+            all_files = os.listdir(dirlist)  # Все файлы в выбранной директории
             audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3'), all_files))]
             self.add(audiofiles)
 
     def mix(self):
-        #Перемешивание
+        # Перемешивание
         self.playlist.clear()
         self.list_of_songs.clear()
         shuffle(self.list_of_ways_to_files)
@@ -93,7 +93,7 @@ class Player(QMainWindow):
         self.now_playing_track()
 
     def delete(self):
-        #Удаление выбранных аудиофайлов из плейлиста
+        # Удаление выбранных аудиофайлов из плейлиста
         items = self.list_of_songs.selectedItems()
         for item in items:
             index = self.list_of_songs.row(item)
@@ -103,23 +103,23 @@ class Player(QMainWindow):
             self.now_playing_track()
 
     def delete_all(self):
-        #Удаление плейлиста полностью
+        # Удаление плейлиста полностью
         self.playlist.clear()
         self.list_of_songs.clear()
         self.list_of_ways_to_files = list()
         self.now_playing_track()
 
     def play_player(self):
-        #Проигрывание
+        # Проигрывание
         self.player.play()
         self.now_playing_track()
 
     def pause_player(self):
-        #Пауза
+        # Пауза
         self.player.pause()
 
     def stop_player(self):
-        #Остановка плеера
+        # Остановка плеера
         self.player.stop()
 
     def next_song(self):
@@ -128,36 +128,37 @@ class Player(QMainWindow):
         self.now_playing_track()
 
     def previous_song(self):
-        #Переключение на предыдущий аудиофайл
+        # Переключение на предыдущий аудиофайл
         self.playlist.previous()
         self.now_playing_track()
 
     def change_vol(self):
-        #Изменение громкости
+        # Изменение громкости
         self.player.setVolume(self.volume_slider.value())
 
     def update_duration(self, duration):
-        #Вывод длительности аудиофайла
+        # Вывод длительности аудиофайла
         self.time_slider.setMaximum(duration)
         self.end_time.setText(time(duration))
 
     def update_position(self, position):
-        #Изменение позиции QSlider'а по мере продвижения аудиофайла
+        # Изменение позиции QSlider'а по мере продвижения аудиофайла
         if position > 0:
             self.now_playing_track()
         self.play_time.setText(time(position))
         self.time_slider.setValue(position)
 
     def change_pos(self):
-        #Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
+        # Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
         if self.player.duration() != self.player.position() and self.player.duration() != 0:
             self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
-        #Вывод всяческой информации о песне, которая играет в данный момент
+        # Вывод всяческой информации о песне, которая играет в данный момент
         if self.playlist.isEmpty() or not self.player.isSeekable():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
+            self.statusBar().showMessage('')
             self.album_pic.hide()
         else:
             track = self.list_of_ways_to_files[self.playlist.currentIndex()]
@@ -166,8 +167,8 @@ class Player(QMainWindow):
             self.getting_album_pic(track)
 
     def get_title(self, file):
-        #Получение  заголовка для окна
-        audio = MP3(file) #Считывание всех метаданных
+        # Получение  заголовка для окна
+        audio = MP3(file)  # Считывание всех метаданных
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
         if 'TIT2' in audio:
@@ -181,8 +182,8 @@ class Player(QMainWindow):
         return f'{artist} - {title}'
 
     def check_info_about_song(self, file):
-        #Получение всей основной информации о песне из метаданных
-        audio = MP3(file) #Считывание всех метаданных
+        # Получение всей основной информации о песне из метаданных
+        audio = MP3(file)  # Считывание всех метаданных
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -190,7 +191,7 @@ class Player(QMainWindow):
         if 'TPE1' in audio:
             artist = str(audio['TPE1'])
         else:
-            artist = 'Unknown artist'
+            artist = 'Unknown musician'
         if 'TDRC' in audio:
             year = str(audio['TDRC'])
         else:
@@ -207,13 +208,13 @@ class Player(QMainWindow):
                f' Год: {year}.'
 
     def getting_album_pic(self, track):
-        #Получение обложки альбома из метаданных
+        # Получение обложки альбома из метаданных
         cover_name = 'cover.png'
         cover_key = ''
-        audio = MP3(track) #Считывание всех метаданных
+        audio = MP3(track) # Считывание всех метаданных
         for i in audio.keys():
             if i.startswith('APIC'):
-                cover_key = i #Получение правильного ключа с обложкой
+                cover_key = i  # Получение правильного ключа с обложкой
         if cover_key != '':
             cover_binary = audio[cover_key]
             with open(cover_name, mode="wb") as cover:
@@ -222,6 +223,7 @@ class Player(QMainWindow):
             cover = cover.scaled(251, 251)
             self.album_pic.setPixmap(cover)
             self.album_pic.show()
+            os.remove('cover.png')
         else:
             self.album_pic.hide()
 
@@ -320,10 +322,6 @@ class ErrorForm(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    """file = QFile('dark/stylesheet.qss')
-    file.open(QFile.ReadOnly | QFile.Text)
-    stream = QTextStream(file)
-    app.setStyleSheet(stream.readAll())"""
     ex = Player()
     ex.show()
     sys.exit(app.exec())

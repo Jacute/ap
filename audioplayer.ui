@@ -711,6 +711,92 @@ QPushButton
         </item>
         <item>
          <widget class="QSlider" name="time_slider">
+          <property name="styleSheet">
+           <string notr="true">QSlider::groove:horizontal {
+    border: 1px solid #999999;
+    height: 5px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);
+    border: 1px solid #5c5c5c;
+    width: 18px;
+    margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 3px;
+}
+
+QSlider::handle:vertical
+{
+    background: #1d2023;
+    border: 0.04em solid #626568;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 0.35em;
+}
+
+QSlider:horizontal
+{
+    height: 2em;
+}
+
+QSlider:vertical
+{
+    width: 2em;
+}
+
+QSlider::handle:horizontal
+{
+    margin: -0.23em 0;
+}
+
+QSlider::handle:vertical
+{
+    margin: 0 -0.23em;
+}
+
+QSlider::groove:horizontal,
+QSlider::groove:vertical
+{
+    background: #2c3034;
+    border: 0em solid #31363b;
+    border-radius: 0.19em;
+}
+
+QSlider::groove:vertical
+{
+    width: 0.4em;
+}
+
+QSlider::handle:horizontal:hover,
+QSlider::handle:horizontal:focus,
+QSlider::handle:vertical:hover,
+QSlider::handle:vertical:focus
+{
+    border: 0.04em solid #3daee9;
+}
+
+QSlider::handle:horizontal:!focus:!hover,
+QSlider::handle:vertical:!focus:!hover
+{
+    border: 0.04em solid #626568;
+}
+
+QSlider::sub-page:horizontal,
+QSlider::add-page:vertical
+{
+    background: #3daee9;
+    border-radius: 0.19em;
+}
+
+QSlider::add-page:horizontal,
+QSlider::sub-page:vertical
+{
+    background: #626568;
+    border-radius: 0.19em;
+}</string>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
