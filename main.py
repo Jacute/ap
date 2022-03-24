@@ -1,9 +1,9 @@
 import sys
 import os
+from random import shuffle
 
 from mutagen.mp3 import MP3
 from mutagen import MutagenError
-from random import shuffle
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
     QInputDialog, QAction, QLabel
 from PyQt5.QtCore import QUrl
@@ -13,10 +13,12 @@ from PyQt5 import uic
 
 
 def time(ms):
-    # Расчёт длительности трека
+    # Расчёт длительности аудиофайла
+
     h, r = divmod(ms, 3600000)
     m, r = divmod(r, 60000)
     s, _ = divmod(r, 1000)
+
     return ("%d:%02d" % (m,s) if h == 0 else "%d:%02d:%02d" % (h,m,s))
 
 
@@ -24,15 +26,18 @@ class Player(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('audioplayer.ui', self)
+
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.player.setPlaylist(self.playlist)
         self.player.setVolume(50)
         self.setFixedWidth(1024)
         self.setFixedHeight(778)
+
         self.list_of_ways_to_files = list()
         self.list_of_names_of_playlists = list()
         self.list_of_tracks_of_playlists = list()
+
         self.album_pic.hide()
         self.setupUi()
 
@@ -154,7 +159,7 @@ class Player(QMainWindow):
             self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
-        # Вывод всяческой информации о песне, которая играет в данный момент
+        # Вывод информации о песне, которая играет в данный момент
         if self.playlist.isEmpty() or not self.player.isSeekable():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
@@ -211,7 +216,7 @@ class Player(QMainWindow):
         # Получение обложки альбома из метаданных
         cover_name = 'cover.png'
         cover_key = ''
-        audio = MP3(track) # Считывание всех метаданных
+        audio = MP3(track)  # Считывание всех метаданных
         for i in audio.keys():
             if i.startswith('APIC'):
                 cover_key = i  # Получение правильного ключа с обложкой
