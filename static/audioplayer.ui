@@ -607,7 +607,7 @@ QPushButton
 }</string>
           </property>
           <property name="text">
-           <string>⬛</string>
+           <string>⬜</string>
           </property>
          </widget>
         </item>
@@ -858,7 +858,7 @@ QListView:!selected
         </rect>
        </property>
        <layout class="QVBoxLayout" name="volume_layout">
-        <item>
+        <item alignment="Qt::AlignHCenter">
          <widget class="QLabel" name="volume_label">
           <property name="font">
            <font>

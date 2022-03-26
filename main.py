@@ -1,7 +1,9 @@
 import sys
 import os
+from functools import partial
 from random import shuffle
 import traceback
+from functools import partial
 
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
@@ -54,7 +56,6 @@ class Player(QMainWindow):
         self.add_track.triggered.connect(self.add)
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
-        self.check_text.triggered.connect(self.check_text_of_song)
         self.play.clicked.connect(self.play_player)
         self.pause.clicked.connect(self.pause_player)
         self.clear.triggered.connect(self.delete_all)
@@ -68,6 +69,7 @@ class Player(QMainWindow):
         self.time_slider.valueChanged[int].connect(self.change_pos)
         self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
         self.del_playlist.triggered.connect(self.delete_playlist)
+        self.list_of_songs.itemDoubleClicked.connect(self.play_choosing_song)
 
     def add(self, fnames):
         if not fnames:
@@ -104,7 +106,6 @@ class Player(QMainWindow):
         for i in self.list_of_ways_to_files:
             self.list_of_songs.addItem(f'{self.get_metadata(i)[0]} - {self.get_metadata(i)[1]}')
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
-        self.setWindowTitle('Audioplayer')
         self.now_playing_track()
 
     def delete(self):
@@ -126,7 +127,13 @@ class Player(QMainWindow):
 
     def play_player(self):
         # Проигрывание
+        self.list_of_songs.setCurrentRow(self.playlist.currentIndex())
         self.player.play()
+
+    def play_choosing_song(self):
+        index = self.list_of_songs.currentRow()
+        self.playlist.setCurrentIndex(index)
+        self.play_player()
 
     def pause_player(self):
         # Пауза
@@ -139,11 +146,13 @@ class Player(QMainWindow):
     def next_song(self):
         # Переключение на следующий аудиофайл
         self.playlist.next()
+        self.list_of_songs.setCurrentRow(self.playlist.currentIndex())
         self.now_playing_track()
 
     def previous_song(self):
         # Переключение на предыдущий аудиофайл
         self.playlist.previous()
+        self.list_of_songs.setCurrentRow(self.playlist.currentIndex())
         self.now_playing_track()
 
     def change_vol(self):
@@ -172,7 +181,7 @@ class Player(QMainWindow):
 
     def now_playing_track(self):
         # Вывод информации о песне, которая играет в данный момент
-        if self.playlist.isEmpty():
+        if self.playlist.isEmpty() or not self.player.isSeekable():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
             self.statusBar().showMessage('')
@@ -237,16 +246,6 @@ class Player(QMainWindow):
             os.remove('cover.png')
         else:
             self.album_pic.hide()
-
-    def check_text_of_song(self):
-        # Просмотр текста песни из метаданных
-        audio = MP3(self.list_of_ways_to_files[self.list_of_songs.currentRow()])
-        if 'COMM::XXX' in audio:
-            self.text = str(audio['COMM::XXX'])
-        else:
-            self.text = 'Unknown text'
-        self.form_for_text = TextForm(self, self.text)
-        self.form_for_text.show()
 
     def add_new_playlist(self):
         # Добавление плейлиста
