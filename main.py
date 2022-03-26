@@ -1,8 +1,11 @@
 import sys
 import os
 from random import shuffle
+import traceback
 
 from mutagen.mp3 import MP3
+from mutagen.wave import WAVE
+from mutagen.flac import FLAC
 from mutagen import MutagenError
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
     QInputDialog, QAction, QLabel
@@ -25,7 +28,7 @@ def time(ms):
 class Player(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('audioplayer.ui', self)
+        uic.loadUi(os.path.abspath('static/audioplayer.ui'), self)
 
         self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
@@ -38,7 +41,11 @@ class Player(QMainWindow):
         self.list_of_names_of_playlists = list()
         self.list_of_tracks_of_playlists = list()
 
+        border_path = os.path.abspath('static/border.png')
+        self.border_pic = QPixmap(border_path)
+        self.border.setPixmap(self.border_pic)
         self.album_pic.hide()
+
         self.setupUi()
 
     def setupUi(self):
@@ -67,15 +74,18 @@ class Player(QMainWindow):
             # Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
-                'Аудиофайл (*.mp3)')[0]
+                'Аудиофайл (*.mp3 *.wav)')[0]
         try:
             if fnames != ['']:
                 for i in fnames:
-                    self.list_of_songs.addItem(self.get_title(i))
+                    self.list_of_songs.addItem('{} - {}'.format(
+                        *self.get_metadata(i)
+                    ))
                     self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
                 self.list_of_ways_to_files.extend(fnames)
         except MutagenError:
-            self.error = ErrorForm()
+            self.error = ErrorForm(traceback.format_exc())
+            print(traceback.format_exc())
             self.error.show()
 
     def add_directory(self):
@@ -83,7 +93,7 @@ class Player(QMainWindow):
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         if dirlist != '':
             all_files = os.listdir(dirlist)  # Все файлы в выбранной директории
-            audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3'), all_files))]
+            audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3') or x.endswith('.wav'), all_files))]
             self.add(audiofiles)
 
     def mix(self):
@@ -92,7 +102,7 @@ class Player(QMainWindow):
         self.list_of_songs.clear()
         shuffle(self.list_of_ways_to_files)
         for i in self.list_of_ways_to_files:
-            self.list_of_songs.addItem(self.get_title(i))
+            self.list_of_songs.addItem(f'{self.get_metadata(i)[0]} - {self.get_metadata(i)[1]}')
             self.playlist.addMedia(QMediaContent(QUrl.fromLocalFile(i)))
         self.setWindowTitle('Audioplayer')
         self.now_playing_track()
@@ -117,7 +127,6 @@ class Player(QMainWindow):
     def play_player(self):
         # Проигрывание
         self.player.play()
-        self.now_playing_track()
 
     def pause_player(self):
         # Пауза
@@ -148,10 +157,13 @@ class Player(QMainWindow):
 
     def update_position(self, position):
         # Изменение позиции QSlider'а по мере продвижения аудиофайла
-        if position > 0:
+        if position >= 0:
+            self.play_time.setText(time(position))
             self.now_playing_track()
-        self.play_time.setText(time(position))
+
+        self.time_slider.blockSignals(True)
         self.time_slider.setValue(position)
+        self.time_slider.blockSignals(False)
 
     def change_pos(self):
         # Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
@@ -160,35 +172,27 @@ class Player(QMainWindow):
 
     def now_playing_track(self):
         # Вывод информации о песне, которая играет в данный момент
-        if self.playlist.isEmpty() or not self.player.isSeekable():
+        if self.playlist.isEmpty():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
             self.statusBar().showMessage('')
             self.album_pic.hide()
         else:
-            track = self.list_of_ways_to_files[self.playlist.currentIndex()]
-            self.setWindowTitle(self.get_title(track))
-            self.statusBar().showMessage(self.check_info_about_song(track))
-            self.getting_album_pic(track)
+            song = self.list_of_ways_to_files[self.playlist.currentIndex()]
+            self.setWindowTitle(f'{self.get_metadata(song)[0]} - {self.get_metadata(song)[1]}')
+            self.statusBar().showMessage('Исполнитель: {}. Название: {}. Альбом: {}. Жанр: {}. Год: {}.'.format(
+                *self.get_metadata(song)
+            ))
+            self.getting_album_pic(song)
 
-    def get_title(self, file):
+    def get_metadata(self, file):
         # Получение  заголовка для окна
-        audio = MP3(file)  # Считывание всех метаданных
+        if file.endswith('.mp3'):
+            audio = MP3(file)  # Считывание всех метаданных
+        elif file.endswith('.wav'):
+            audio = WAVE(file)
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
-        if 'TIT2' in audio:
-            title = str(audio['TIT2'])
-        else:
-            title = 'Unknown title'
-        if 'TPE1' in audio:
-            artist = str(audio['TPE1'])
-        else:
-            artist = 'Unknown artist'
-        return f'{artist} - {title}'
-
-    def check_info_about_song(self, file):
-        # Получение всей основной информации о песне из метаданных
-        audio = MP3(file)  # Считывание всех метаданных
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
         else:
@@ -209,14 +213,16 @@ class Player(QMainWindow):
             genre = str(audio['TCON'])
         else:
             genre = 'Unknown genre'
-        return f'Исполнитель: {artist}. Название: {title}. Альбом: {album}. Жанр: {genre}.' \
-               f' Год: {year}.'
+        return [artist, title, year, album, genre]
 
-    def getting_album_pic(self, track):
+    def getting_album_pic(self, file):
         # Получение обложки альбома из метаданных
         cover_name = 'cover.png'
         cover_key = ''
-        audio = MP3(track)  # Считывание всех метаданных
+        if file.endswith('.mp3'):
+            audio = MP3(file)  # Считывание всех метаданных
+        elif file.endswith('.wav'):
+            audio = WAVE(file)
         for i in audio.keys():
             if i.startswith('APIC'):
                 cover_key = i  # Получение правильного ключа с обложкой
@@ -225,7 +231,7 @@ class Player(QMainWindow):
             with open(cover_name, mode="wb") as cover:
                 cover.write(cover_binary.data)
             cover = QPixmap(cover_name)
-            cover = cover.scaled(251, 251)
+            cover = cover.scaled(250, 250)
             self.album_pic.setPixmap(cover)
             self.album_pic.show()
             os.remove('cover.png')
@@ -246,7 +252,7 @@ class Player(QMainWindow):
         # Добавление плейлиста
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')
-        with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
+        with open('static/playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
             if ok_pressed:
                 all_files = "\n".join(self.list_of_ways_to_files)
                 txt_of_playlists.write(f'{title}\n{all_files}\n\n')
@@ -262,7 +268,7 @@ class Player(QMainWindow):
 
     def check_playlists(self):
         # Проверка playlists.txt на наличие плейлистов
-        with open('playlists.txt', mode='r', encoding='utf-8') as txt_of_playlists:
+        with open('static/playlists.txt', mode='r', encoding='utf-8') as txt_of_playlists:
             text = txt_of_playlists.read().split('\n\n')
             if text != ['']:
                 for i in text[:-1]:
@@ -281,7 +287,7 @@ class Player(QMainWindow):
         title, ok_pressed = QInputDialog.getText(
             self, "Плейлист", 'Введите название плейлиста')
         if title in self.list_of_names_of_playlists:
-            with open('playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
+            with open('static/playlists.txt', mode='a+', encoding='utf-8') as txt_of_playlists:
                 if ok_pressed:
                     text = list(filter(lambda x: not x.startswith(title),
                                        txt_of_playlists.read().split('\n\n')))
@@ -312,17 +318,18 @@ class TextForm(QWidget):
 
 
 class ErrorForm(QWidget):
-    def __init__(self):
+    def __init__(self, error):
         # Форма для ошибки аудиофайла с неправильной директорией
         super().__init__()
+        self.error = error
         self.setupUI()
 
     def setupUI(self):
-        self.setGeometry(300, 300, 350, 50)
+        self.setGeometry(300, 300, 440, 440)
         self.setWindowTitle('Ошибка')
         self.txt = QLabel(self)
-        self.txt.setText(f'Ошибка. Задан неправильный путь к аудиофайлу(ам).')
-        self.txt.resize(350, 50)
+        self.txt.setText(self.error)
+        self.txt.resize(440, 440)
 
 
 if __name__ == '__main__':

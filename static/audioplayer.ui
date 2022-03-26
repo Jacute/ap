@@ -264,9 +264,9 @@ QWidget:disabled:hover
       <widget class="QWidget" name="horizontalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>270</x>
          <y>1</y>
-         <width>731</width>
+         <width>721</width>
          <height>71</height>
         </rect>
        </property>
@@ -823,9 +823,9 @@ QSlider::sub-page:vertical
       <widget class="QListWidget" name="list_of_songs">
        <property name="geometry">
         <rect>
-         <x>260</x>
+         <x>270</x>
          <y>71</y>
-         <width>731</width>
+         <width>721</width>
          <height>641</height>
         </rect>
        </property>
@@ -853,7 +853,7 @@ QListView:!selected
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>251</width>
+         <width>261</width>
          <height>56</height>
         </rect>
        </property>
@@ -869,7 +869,7 @@ QListView:!selected
            </font>
           </property>
           <property name="text">
-           <string>                             Громкость</string>
+           <string>Громкость</string>
           </property>
          </widget>
         </item>
@@ -980,18 +980,30 @@ QSlider::sub-page:vertical
         </item>
        </layout>
       </widget>
-      <widget class="QLabel" name="album_pic">
+      <widget class="QLabel" name="border">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>70</y>
-         <width>251</width>
-         <height>251</height>
+         <width>264</width>
+         <height>264</height>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-style: solid; border-width: 5px; border-color: black;
-</string>
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="album_pic">
+       <property name="geometry">
+        <rect>
+         <x>7</x>
+         <y>77</y>
+         <width>250</width>
+         <height>250</height>
+        </rect>
        </property>
        <property name="text">
         <string/>
@@ -1008,7 +1020,7 @@ QSlider::sub-page:vertical
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="audio_menu">
