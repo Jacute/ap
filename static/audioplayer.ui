@@ -1032,7 +1032,6 @@ QSlider::sub-page:vertical
     <addaction name="delete_track"/>
     <addaction name="mix_tracks"/>
     <addaction name="clear"/>
-    <addaction name="check_text"/>
    </widget>
    <widget class="QMenu" name="playlist_menu">
     <property name="title">

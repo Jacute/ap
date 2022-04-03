@@ -52,6 +52,9 @@ class Player(QMainWindow):
 
     def setupUi(self):
         self.setWindowTitle('Audioplayer')
+        self.statusbarMessage = QLabel()
+        self.statusBar().addWidget(self.statusbarMessage)
+
         self.check_playlists()
         self.add_track.triggered.connect(self.add)
         self.add_folder.triggered.connect(self.add_directory)
@@ -76,7 +79,7 @@ class Player(QMainWindow):
             # Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
                 self, 'Выбрать аудиофайл', '',
-                'Аудиофайл (*.mp3 *.wav)')[0]
+                'Аудиофайл (*.mp3 *.wav *.flac)')[0]
         try:
             if fnames != ['']:
                 for i in fnames:
@@ -95,7 +98,9 @@ class Player(QMainWindow):
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         if dirlist != '':
             all_files = os.listdir(dirlist)  # Все файлы в выбранной директории
-            audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3') or x.endswith('.wav'), all_files))]
+            audiofiles = [dirlist + '/' + i for i in list(filter(lambda x: x.endswith('.mp3') or
+                                                                           x.endswith('.wav') or
+                                                                           x.endswith('.flac'), all_files))]
             self.add(audiofiles)
 
     def mix(self):
@@ -184,45 +189,55 @@ class Player(QMainWindow):
         if self.playlist.isEmpty() or not self.player.isSeekable():
             self.setWindowTitle('Audioplayer')
             self.end_time.setText('0:00')
-            self.statusBar().showMessage('')
+            self.statusbarMessage.setText("")
             self.album_pic.hide()
         else:
             song = self.list_of_ways_to_files[self.playlist.currentIndex()]
             self.setWindowTitle(f'{self.get_metadata(song)[0]} - {self.get_metadata(song)[1]}')
-            self.statusBar().showMessage('Исполнитель: {}. Название: {}. Альбом: {}. Жанр: {}. Год: {}.'.format(
-                *self.get_metadata(song)
-            ))
+            self.statusbarMessage.setText('Исполнитель: {}. Название: {}. Альбом: {}. Жанр: {}. Дата: {}.'.format(
+                *self.get_metadata(song)))
             self.getting_album_pic(song)
 
     def get_metadata(self, file):
-        # Получение  заголовка для окна
         if file.endswith('.mp3'):
             audio = MP3(file)  # Считывание всех метаданных
         elif file.endswith('.wav'):
             audio = WAVE(file)
+        elif file.endswith('.flac'):
+            audio = FLAC(file)
         '''TDRC (год), TALB (альбом), TIT2 (название трека),
         TPE1 (исполнитель), TCON (жанр), COMM:XXX (текст), APIC (обложка альбома)'''
         if 'TIT2' in audio:
             title = str(audio['TIT2'])
+        elif 'title' in audio:
+            title = str(audio['title'][0])
         else:
             title = 'Unknown title'
         if 'TPE1' in audio:
             artist = str(audio['TPE1'])
+        elif 'artist' in audio:
+            artist = str(audio['artist'][0])
         else:
             artist = 'Unknown musician'
         if 'TDRC' in audio:
-            year = str(audio['TDRC'])
+            date = str(audio['TDRC'])
+        elif 'date' in audio:
+            date = str(audio['date'][0])
         else:
-            year = 'Unknown year'
+            date = 'Unknown date'
         if 'TALB' in audio:
             album = str(audio['TALB'])
+        elif 'album' in audio:
+            album = str(audio['album'][0])
         else:
             album = 'Unknown album'
         if 'TCON' in audio:
             genre = str(audio['TCON'])
+        elif 'genre' in audio:
+            genre = str(audio['genre'][0])
         else:
             genre = 'Unknown genre'
-        return [artist, title, year, album, genre]
+        return [artist, title, album, genre, date]
 
     def getting_album_pic(self, file):
         # Получение обложки альбома из метаданных
@@ -232,6 +247,8 @@ class Player(QMainWindow):
             audio = MP3(file)  # Считывание всех метаданных
         elif file.endswith('.wav'):
             audio = WAVE(file)
+        elif file.endswith('.flac'):
+            audio = FLAC(file)
         for i in audio.keys():
             if i.startswith('APIC'):
                 cover_key = i  # Получение правильного ключа с обложкой
@@ -299,21 +316,6 @@ class Player(QMainWindow):
                     txt_of_playlists.write('\n\n'.join(text))
         else:
             self.delete_playlist()
-
-
-class TextForm(QWidget):
-    def __init__(self, *args):
-        # Форма для отображения текста выбранного аудиофайла
-        super().__init__()
-        self.setupUI(args)
-
-    def setupUI(self, args):
-        self.setGeometry(300, 300, 800, 600)
-        self.setWindowTitle('Текст')
-        self.txt = QTextEdit(self)
-        self.txt.setText(args[-1])
-        self.txt.setReadOnly(True)
-        self.txt.resize(800, 600)
 
 
 class ErrorForm(QWidget):
