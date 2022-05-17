@@ -12,7 +12,7 @@ from mutagen import MutagenError
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
     QInputDialog, QAction, QLabel
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
 
@@ -260,7 +260,6 @@ class Player(QMainWindow):
             cover = cover.scaled(250, 250)
             self.album_pic.setPixmap(cover)
             self.album_pic.show()
-            os.remove('cover.png')
         else:
             self.album_pic.hide()
 
