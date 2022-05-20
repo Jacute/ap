@@ -17,9 +17,15 @@ http://www.codecguide.com/download_kl.htm
 ## Hotkeys
 
 F - open files
+
 Ctrl+F - open directory
+
 Ctrl+C - clear playlist
+
 R - loop
+
 S - mix
+
 Right - forward rewind
+
 Left - back rewind
