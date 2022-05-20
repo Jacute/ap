@@ -7,9 +7,9 @@ from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 from mutagen.flac import FLAC
 from mutagen import MutagenError
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QInputDialog, QAction, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QInputDialog, QAction, QLabel, QShortcut
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QKeySequence
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
 
@@ -53,25 +53,46 @@ class Player(QMainWindow):
         self.statusBar().addWidget(self.statusbarMessage)
 
         self.check_playlists()
+
         self.add_track.triggered.connect(self.add)
         self.add_folder.triggered.connect(self.add_directory)
         self.delete_track.triggered.connect(self.delete)
-        self.play.clicked.connect(self.play_player)
-        self.pause.clicked.connect(self.pause_player)
         self.clear.triggered.connect(self.delete_all)
         self.mix_tracks.triggered.connect(self.mix)
+
+        self.play.clicked.connect(self.play_player)
+        self.pause.clicked.connect(self.pause_player)
         self.next.clicked.connect(self.next_song)
         self.previous.clicked.connect(self.previous_song)
         self.stop.clicked.connect(self.stop_player)
+
         self.volume_slider.valueChanged[int].connect(self.change_vol)
         self.player.durationChanged.connect(self.update_duration)
         self.player.positionChanged.connect(self.update_position)
         self.time_slider.valueChanged[int].connect(self.change_pos)
+
         self.add_tracks_to_playlist.triggered.connect(self.add_new_playlist)
         self.del_playlist.triggered.connect(self.delete_playlist)
+
         self.list_of_songs.itemDoubleClicked.connect(self.play_choosing_song)
 
-    def add(self, fnames):
+        # Hotkeys
+        self.forward_rewind_shortcut = QShortcut(QKeySequence.MoveToNextChar, self)
+        self.forward_rewind_shortcut.activated.connect(lambda: self.change_pos(10000))
+        self.back_rewind_shortcut = QShortcut(QKeySequence.MoveToPreviousChar, self)
+        self.back_rewind_shortcut.activated.connect(lambda: self.change_pos(-10000))
+        self.add_shortcut = QShortcut(QKeySequence('F'), self)
+        self.add_shortcut.activated.connect(self.add)
+        self.add_directory_shortcut = QShortcut(QKeySequence('Ctrl+F'), self)
+        self.add_directory_shortcut.activated.connect(self.add_directory)
+        self.clear_shortcut = QShortcut(QKeySequence('Ctrl+C'), self)
+        self.clear_shortcut.activated.connect(self.delete_all)
+        self.repeat_shortcut = QShortcut(QKeySequence('R'), self)
+        self.repeat_shortcut.activated.connect(lambda: self.repeat.setChecked(not self.repeat.isChecked()))
+        self.mix_shortcut = QShortcut(QKeySequence('S'), self)
+        self.mix_shortcut.activated.connect(self.mix)
+
+    def add(self, fnames=None):
         if not fnames:
             # Диалоговое окно для выбора аудиофайлов
             fnames = QFileDialog.getOpenFileNames(
@@ -179,10 +200,10 @@ class Player(QMainWindow):
         self.time_slider.setValue(position)
         self.time_slider.blockSignals(False)
 
-    def change_pos(self):
+    def change_pos(self, count=None):
         # Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
         if self.player.duration() != self.player.position() and self.player.duration() != 0:
-            self.player.setPosition(self.time_slider.value())
+            self.player.setPosition(self.time_slider.value() if not count else self.time_slider.value() + count)
 
     def now_playing_track(self):
         # Вывод информации о песне, которая играет в данный момент

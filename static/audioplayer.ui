@@ -922,7 +922,7 @@ QSlider::sub-page:vertical
           </property>
           <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>81</width>
             <height>30</height>
            </size>
           </property>
@@ -1261,6 +1261,12 @@ QSlider::sub-page:vertical
   <action name="add_track">
    <property name="text">
     <string>Добавить аудиофайл(ы)</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
    </property>
   </action>
   <action name="delete_track">
