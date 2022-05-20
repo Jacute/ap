@@ -261,7 +261,7 @@ QWidget:disabled:hover
     background-color: #31363b;
 }</string>
       </property>
-      <widget class="QWidget" name="horizontalLayoutWidget">
+      <widget class="QGroupBox" name="horizontalGroupBox">
        <property name="geometry">
         <rect>
          <x>270</x>
@@ -270,22 +270,37 @@ QWidget:disabled:hover
          <height>71</height>
         </rect>
        </property>
-       <layout class="QHBoxLayout" name="main_buttons_and_time">
+       <layout class="QHBoxLayout" name="main_buttons_and_time" stretch="50,0,0,0,0,0,0,0,0">
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <item>
          <widget class="QPushButton" name="previous">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>81</width>
+            <width>50</width>
             <height>30</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>50</width>
-            <height>16777215</height>
+            <width>51</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
           <property name="font">
@@ -805,6 +820,9 @@ QPushButton
         </item>
         <item>
          <widget class="QSlider" name="time_slider">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="styleSheet">
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
@@ -1083,6 +1101,9 @@ QListView:!selected
         </item>
         <item>
          <widget class="QSlider" name="volume_slider">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="styleSheet">
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
