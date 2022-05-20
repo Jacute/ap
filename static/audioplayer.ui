@@ -271,8 +271,28 @@ QWidget:disabled:hover
         </rect>
        </property>
        <layout class="QHBoxLayout" name="main_buttons_and_time">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
         <item>
          <widget class="QPushButton" name="previous">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -326,7 +346,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #626568;
+    background-color: #1d2023;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -358,6 +378,23 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="play">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -411,7 +448,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #626568;
+    background-color: #1d2023;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -443,6 +480,23 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="pause">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -496,7 +550,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #626568;
+    background-color: #1d2023;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -528,6 +582,23 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="stop">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -581,7 +652,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #626568;
+    background-color: #1d2023;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -607,12 +678,29 @@ QPushButton
 }</string>
           </property>
           <property name="text">
-           <string>⬜</string>
+           <string>■</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="next">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -666,7 +754,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #626568;
+    background-color: #1d2023;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -693,6 +781,12 @@ QPushButton
           </property>
           <property name="text">
            <string>►❙</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -815,6 +909,120 @@ QSlider::sub-page:vertical
           </property>
           <property name="text">
            <string>0:00</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="repeat">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>51</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton
+{
+    color: #eff0f1;
+    background-color: #31363b;
+    border: 0.04em solid #76797c;
+    padding: 0.5em;
+    border-radius: 0.09em;
+    outline: none;
+    min-height: 1.1em;
+}
+
+QPushButton:open
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:closed
+{
+    border-width: 0.04em;
+    border-color: #76797c;
+}
+
+QPushButton:disabled
+{
+    background-color: #31363b;
+    border-width: 0.04em;
+    border-color: #76797c;
+    border-style: solid;
+    padding-top: 0.23em;
+    padding-bottom: 0.23em;
+    padding-left: 1ex;
+    padding-right: 1ex;
+    border-radius: 0.04em;
+    color: #454545;
+}
+
+QPushButton:focus
+{
+    color: #eff0f1;
+}
+
+QPushButton:pressed
+{
+    background-color: #454a4f;
+    padding-top: -0.65em;
+    padding-bottom: -0.74em;
+    color: #eff0f1;
+}
+
+QPushButton:checked
+{
+    background-color: #1d2023;
+    border: 0.04em solid #76797c;
+    color: #eff0f1;
+}
+
+QPushButton:hover
+{
+    background-color: #31363b;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton:checked:hover
+{
+    background-color: #626568;
+    border: 0.04em solid #3daee9;
+    color: #eff0f1;
+}
+
+QPushButton
+{
+    min-height: 1.1em;
+    min-width: 5em;
+}</string>
+          </property>
+          <property name="text">
+           <string>⭮</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

@@ -1,18 +1,15 @@
 import sys
 import os
-from functools import partial
 from random import shuffle
 import traceback
-from functools import partial
 
 from mutagen.mp3 import MP3
 from mutagen.wave import WAVE
 from mutagen.flac import FLAC
 from mutagen import MutagenError
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QTextEdit, QFileDialog, \
-    QInputDialog, QAction, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog, QInputDialog, QAction, QLabel
 from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import *
 from PyQt5 import uic
 
@@ -174,6 +171,9 @@ class Player(QMainWindow):
         if position >= 0:
             self.play_time.setText(time(position))
             self.now_playing_track()
+        if position == self.player.duration() and self.repeat.isChecked() and position != 0:
+            self.stop_player()
+            self.play_player()
 
         self.time_slider.blockSignals(True)
         self.time_slider.setValue(position)
