@@ -273,6 +273,24 @@ QWidget:disabled:hover
        <layout class="QHBoxLayout" name="main_buttons_and_time">
         <item>
          <widget class="QPushButton" name="previous">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -343,12 +361,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
@@ -358,6 +370,24 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="play">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -428,12 +458,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
@@ -443,6 +467,24 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="pause">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -513,12 +555,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
@@ -528,6 +564,24 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="stop">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -598,12 +652,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
@@ -613,6 +661,24 @@ QPushButton
         </item>
         <item>
          <widget class="QPushButton" name="next">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -683,12 +749,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
@@ -698,6 +758,24 @@ QPushButton
         </item>
         <item>
          <widget class="QLabel" name="play_time">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>22</width>
+            <height>69</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>124151</width>
+            <height>69</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QLabel
 {
@@ -711,6 +789,24 @@ QPushButton
         </item>
         <item>
          <widget class="QSlider" name="time_slider">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>84</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>142463</width>
+            <height>22</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
@@ -807,6 +903,24 @@ QSlider::sub-page:vertical
         </item>
         <item>
          <widget class="QLabel" name="end_time">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>22</width>
+            <height>69</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>14251</width>
+            <height>69</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QLabel
 {
@@ -820,6 +934,24 @@ QSlider::sub-page:vertical
         </item>
         <item>
          <widget class="QPushButton" name="repeat">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton
 {
@@ -873,7 +1005,7 @@ QPushButton:pressed
 
 QPushButton:checked
 {
-    background-color: #1d2023;
+    background-color: #626568;
     border: 0.04em solid #76797c;
     color: #eff0f1;
 }
@@ -890,12 +1022,6 @@ QPushButton:checked:hover
     background-color: #626568;
     border: 0.04em solid #3daee9;
     color: #eff0f1;
-}
-
-QPushButton
-{
-    min-height: 1.1em;
-    min-width: 5em;
 }</string>
           </property>
           <property name="text">
