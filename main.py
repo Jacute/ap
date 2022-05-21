@@ -78,9 +78,9 @@ class Player(QMainWindow):
 
         # Hotkeys
         self.forward_rewind_shortcut = QShortcut(QKeySequence.MoveToNextChar, self)
-        self.forward_rewind_shortcut.activated.connect(lambda: self.change_pos(10000))
+        self.forward_rewind_shortcut.activated.connect(self.forward_rewind)
         self.back_rewind_shortcut = QShortcut(QKeySequence.MoveToPreviousChar, self)
-        self.back_rewind_shortcut.activated.connect(lambda: self.change_pos(-10000))
+        self.back_rewind_shortcut.activated.connect(self.back_rewind)
         self.add_shortcut = QShortcut(QKeySequence('F'), self)
         self.add_shortcut.activated.connect(self.add)
         self.add_directory_shortcut = QShortcut(QKeySequence('Ctrl+F'), self)
@@ -91,6 +91,12 @@ class Player(QMainWindow):
         self.repeat_shortcut.activated.connect(lambda: self.repeat.setChecked(not self.repeat.isChecked()))
         self.mix_shortcut = QShortcut(QKeySequence('S'), self)
         self.mix_shortcut.activated.connect(self.mix)
+
+    def forward_rewind(self):
+        self.player.setPosition(self.time_slider.value() + 10000)
+
+    def back_rewind(self):
+        self.player.setPosition(self.time_slider.value() - 10000)
 
     def add(self, fnames=None):
         if not fnames:
@@ -202,8 +208,8 @@ class Player(QMainWindow):
 
     def change_pos(self, count=None):
         # Изменение позиции плеера по мере продвижения QSlider'а (перемотка)
-        if self.player.duration() != self.player.position() and self.player.duration() != 0:
-            self.player.setPosition(self.time_slider.value() if not count else self.time_slider.value() + count)
+        # if self.player.duration() != self.player.position() and self.player.duration() != 0:
+        self.player.setPosition(self.time_slider.value())
 
     def now_playing_track(self):
         # Вывод информации о песне, которая играет в данный момент
