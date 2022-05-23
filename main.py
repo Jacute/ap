@@ -91,6 +91,8 @@ class Player(QMainWindow):
         self.repeat_shortcut.activated.connect(lambda: self.repeat.setChecked(not self.repeat.isChecked()))
         self.mix_shortcut = QShortcut(QKeySequence('S'), self)
         self.mix_shortcut.activated.connect(self.mix)
+        self.delete_shortcut = QShortcut(QKeySequence.Delete, self)
+        self.delete_shortcut.activated.connect(self.delete)
 
     def add(self, fnames=None):
         if not fnames:

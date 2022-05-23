@@ -29,3 +29,5 @@ S - mix
 Right - forward rewind
 
 Left - back rewind
+
+Delete - delete choosing songs
